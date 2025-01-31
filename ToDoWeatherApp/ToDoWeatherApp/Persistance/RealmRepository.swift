@@ -28,6 +28,11 @@ protocol DeleteObject {
     func delete<T: Object>(_ id: String, ofType: T.Type) throws
 }
 
+protocol DataTransformable {
+    func convertListToResult<T>(with results: List<T>) -> [T]
+    func mapResults<T>(with results: [T]) -> List<T>
+}
+
 public typealias RealmDecodable = Object & Decodable
 public typealias RealmCodable = Object & Codable
 
@@ -37,7 +42,7 @@ fileprivate func getConfiguration(fileName: String) -> Realm.Configuration {
     return configuration
 }
 
-class RealmRepository: DataSource {
+class RealmRepository: DataSource, DataTransformable {
     private var configuration: Realm.Configuration
     
     public init() {
@@ -129,7 +134,7 @@ class RealmRepository: DataSource {
     }
     
     func mapResults<T>(with results: [T]) -> List<T> {
-        var data = List<T>()
+        let data = List<T>()
         
         for result in results {
             data.append(result)

@@ -10,7 +10,7 @@ struct ToDoWeatherTabView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Text("To Do List")
+            ToDoListView()
                 .tabItem {
                     Image(systemName: "list.bullet.clipboard")
                     Text("To Do")
