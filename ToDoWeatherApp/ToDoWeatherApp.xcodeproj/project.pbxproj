@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		821E69FF2D4D16DF0095423F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; };
+		821E6A002D4D16DF0095423F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		821E69CF2D4D12520095423F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -22,6 +27,20 @@
 			remoteInfo = ToDoWeatherApp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		821E6A012D4D16DF0095423F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				821E6A002D4D16DF0095423F /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		821E69BD2D4D124F0095423F /* ToDoWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				821E69FF2D4D16DF0095423F /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +98,7 @@
 				821E69BF2D4D124F0095423F /* ToDoWeatherApp */,
 				821E69D12D4D12520095423F /* ToDoWeatherAppTests */,
 				821E69DB2D4D12520095423F /* ToDoWeatherAppUITests */,
+				821E69FD2D4D16DF0095423F /* Frameworks */,
 				821E69BE2D4D124F0095423F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,6 +113,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		821E69FD2D4D16DF0095423F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -102,6 +130,7 @@
 				821E69B92D4D124F0095423F /* Sources */,
 				821E69BA2D4D124F0095423F /* Frameworks */,
 				821E69BB2D4D124F0095423F /* Resources */,
+				821E6A012D4D16DF0095423F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -112,6 +141,7 @@
 			);
 			name = ToDoWeatherApp;
 			packageProductDependencies = (
+				821E69FE2D4D16DF0095423F /* RealmSwift */,
 			);
 			productName = ToDoWeatherApp;
 			productReference = 821E69BD2D4D124F0095423F /* ToDoWeatherApp.app */;
@@ -195,6 +225,9 @@
 			);
 			mainGroup = 821E69B42D4D124F0095423F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				821E69FC2D4D16B50095423F /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 821E69BE2D4D124F0095423F /* Products */;
 			projectDirPath = "";
@@ -583,6 +616,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		821E69FC2D4D16B50095423F /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		821E69FE2D4D16DF0095423F /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 821E69FC2D4D16B50095423F /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 821E69B52D4D124F0095423F /* Project object */;
 }

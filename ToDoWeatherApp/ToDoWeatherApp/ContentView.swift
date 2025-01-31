@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  ToDoWeatherApp
-//
-//  Created by Raeesa Parsaad on 2025/01/31.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -18,7 +11,6 @@ struct ContentView: View {
         .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
