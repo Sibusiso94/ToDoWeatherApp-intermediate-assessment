@@ -4,7 +4,7 @@ import OSLog
 class ApiDataManager {
     private let repository: RealmRepository
     private let networkingManager = NetworkManagerConcreation()
-    private let baseURL = "http://api.weatherapi.com/v1/forecast.json"
+    private let baseURL = "https://api.weatherapi.com/v1/forecast.json"
     
     var hasError: Bool = false
     var error: ApiError?
@@ -14,7 +14,7 @@ class ApiDataManager {
     }
     
     func fetchApiData(location: String,
-                      completion: @escaping ([WeatherModel]?, Error?) -> Void) {
+                      completion: @escaping (WeatherModel?, Error?) -> Void) {
         let url = networkingManager.createURL(
             baseURL: baseURL,
             parameters: [
@@ -27,7 +27,7 @@ class ApiDataManager {
         )
         
         if let url = url {
-            networkingManager.fetchData(from: url) { [weak self] (result: Result<[WeatherModel], ApiError>) in
+            networkingManager.fetchData(from: url) { [weak self] (result: Result<WeatherModel?, ApiError>) in
                 switch result {
                 case .success(let data):
                     completion(data, nil)

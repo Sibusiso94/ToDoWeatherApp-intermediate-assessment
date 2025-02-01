@@ -7,7 +7,7 @@ protocol NetworkManager {
     var error: ApiError? { get set }
     
     func createURL(baseURL: String, parameters: [(String, String)]) -> URL?
-    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T, ApiError>) -> Void)
+    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T?, ApiError>) -> Void)
 }
 
 enum ApiError: LocalizedError {
@@ -47,7 +47,7 @@ final class NetworkManagerConcreation: NetworkManager {
         return components?.url
     }
     
-    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T, ApiError>) -> Void) {
+    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T?, ApiError>) -> Void) {
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
@@ -67,7 +67,6 @@ final class NetworkManagerConcreation: NetworkManager {
                 
                 do {
                     let decoder = JSONDecoder()
-                    decoder.keyDecodingStrategy = .convertFromSnakeCase
                     let resultData = try decoder.decode(T.self, from: data)
                     completion(.success(resultData))
                 } catch {
