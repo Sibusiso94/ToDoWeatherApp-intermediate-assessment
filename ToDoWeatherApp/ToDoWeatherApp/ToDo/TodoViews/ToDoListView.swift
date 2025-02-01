@@ -1,43 +1,77 @@
 import SwiftUI
 
 struct ToDoListView: View {
-    @State var mock: [ToDoItem] = [ToDoItem(title: "Cook", todoDescription: "Lasagna", isCompleted: true),
-                             ToDoItem(title: "Clean", todoDescription: "Clean the Kitchen floor, counter and cupboards"),
-                             ToDoItem(title: "Work", todoDescription: "Continue Personal project"),
-                             ToDoItem(title: "Eat", todoDescription: "Eat cooked lasagna", isCompleted: true),
-                             ToDoItem(title: "Sleep", todoDescription: "get rest for the next day", isCompleted: true)]
+    @StateObject var viewModel = ToDoListViewModel()
+    @State var showPopup = false
+    
     var body: some View {
-        ScrollView {
-            Section {
-                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
-                    ForEach(Array(mock.enumerated()), id: \.offset) { index, item in
-                        ItemCardView(title: item.title,
-                                     description: item.todoDescription,
-                                     isCompleted: item.isCompleted) { newValue in
-                            // update task
-                        }
+        NavigationStack {
+            ScrollView {
+                if viewModel.toDoTasks.isEmpty {
+                    Button {
+                        showPopup.toggle()
+                    } label: {
+                        Text("Add Task")
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .frame(minHeight: 50)
+                    .background(.gray.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .background(RoundedRectangle(cornerRadius: 5).stroke().opacity(0.5))
+                    .foregroundStyle(.black)
+                } else {
+                    Section {
+                        LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                            ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
+                                ItemCardView(title: item.title,
+                                             description: item.todoDescription,
+                                             isCompleted: item.isCompleted) { newValue in
+                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+                                }
+                            }
+                            .padding()
+                        }
+                    } header: {
+                        Text("To do")
+                            .font(.headline)
+                    }
                 }
-            } header: {
-                Text("To do")
-                    .font(.headline)
+                
+                if !viewModel.completedTasks.isEmpty {
+                    Section {
+                        LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                            ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
+                                ItemCardView(title: item.title,
+                                             description: item.todoDescription,
+                                             isCompleted: item.isCompleted) { newValue in
+                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+                                }
+                            }
+                            .padding()
+                        }
+                    } header: {
+                        Text("Completed")
+                            .font(.headline)
+                    }
+                }
             }
-            
-            Section {
-                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
-                    ForEach(Array(mock.enumerated()), id: \.offset) { index, item in
-                        ItemCardView(title: item.title,
-                                     description: item.todoDescription,
-                                     isCompleted: item.isCompleted) { newValue in
-                            item.isCompleted.toggle()
-                        }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showPopup.toggle()
+                    } label: {
+                        Image(systemName: "plus.square.dashed")
                     }
-                    .padding()
+
                 }
-            } header: {
-                Text("Completed")
-                    .font(.headline)
+            }
+            .sheet(isPresented: $showPopup) {
+                AddTaskView(titleInput: $viewModel.newItem.title, descriptionInput: $viewModel.newItem.todoDescription) {
+                    viewModel.addToDoItem()
+                }
+                .alert("Item Successfully Added", isPresented: $viewModel.didSucceed) {
+                    Button("OK", role: .cancel) { }
+                }
             }
         }
     }

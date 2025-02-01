@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		821E69FF2D4D16DF0095423F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; };
 		821E6A002D4D16DF0095423F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		82ADCDB42D4E1049009A6F93 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 82ADCDB32D4E1049009A6F93 /* RealmSwift */; };
+		82ADCDB52D4E1049009A6F93 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 82ADCDB32D4E1049009A6F93 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				821E6A002D4D16DF0095423F /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		82ADCDB62D4E1049009A6F93 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				82ADCDB52D4E1049009A6F93 /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82ADCDB42D4E1049009A6F93 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +168,7 @@
 				821E69CA2D4D12520095423F /* Sources */,
 				821E69CB2D4D12520095423F /* Frameworks */,
 				821E69CC2D4D12520095423F /* Resources */,
+				82ADCDB62D4E1049009A6F93 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -165,6 +180,7 @@
 			);
 			name = ToDoWeatherAppTests;
 			packageProductDependencies = (
+				82ADCDB32D4E1049009A6F93 /* RealmSwift */,
 			);
 			productName = ToDoWeatherAppTests;
 			productReference = 821E69CE2D4D12520095423F /* ToDoWeatherAppTests.xctest */;
@@ -630,6 +646,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		821E69FE2D4D16DF0095423F /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 821E69FC2D4D16B50095423F /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		82ADCDB32D4E1049009A6F93 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 821E69FC2D4D16B50095423F /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;

@@ -1,36 +1,32 @@
 import Foundation
 import RealmSwift
 
-protocol DataSource: CreateObject, ReadObject, UpdateObject, DeleteObject { }
+protocol DataSource: CreateObject, ReadObject, DeleteObject { }
 
 protocol CreateObject {
     associatedtype T: Object
-    func create(_ insertions: T) throws
-}
-
-protocol MultipleObjectsCreatable {
-    associatedtype T: Object
-    func createMultiple(_ insertions: [T])
+    func create(_ object: T) throws
 }
 
 protocol ReadObject {
     associatedtype T: Object
-    func read<T: Object>(_ type: T.Type) -> T?
+    func readAll() -> [T]
 }
 
 protocol UpdateObject {
     associatedtype T: AnyObject
-    func update<T: Object>(_ object: T) throws
+    func update(_ object: T) throws
 }
 
 protocol DeleteObject {
     associatedtype T: Object
-    func delete<T: Object>(_ id: String, ofType: T.Type) throws
+    func delete(_ id: String) throws
 }
 
 protocol DataTransformable {
-    func convertListToResult<T>(with results: List<T>) -> [T]
-    func mapResults<T>(with results: [T]) -> List<T>
+    associatedtype T: Object
+    func convertListToResult(with results: List<T>) -> [T]
+    func mapResults(with results: [T]) -> List<T>
 }
 
 public typealias RealmDecodable = Object & Decodable
@@ -42,8 +38,9 @@ fileprivate func getConfiguration(fileName: String) -> Realm.Configuration {
     return configuration
 }
 
-class RealmRepository: DataSource, DataTransformable {
-    private var configuration: Realm.Configuration
+class RealmRepository {
+    var configuration: Realm.Configuration
+    private var _realm: Realm?
     
     public init() {
         let configuration = getConfiguration(fileName: "toDoWeatherApp.realm")
@@ -63,7 +60,15 @@ class RealmRepository: DataSource, DataTransformable {
     }
     
     public var realm: Realm {
-        return try! Realm()
+        get {
+                if _realm == nil {
+                    _realm = try! Realm() // Lazily initialize if not set
+                }
+                return _realm!
+            }
+            set {
+                _realm = newValue
+            }
     }
     
     func create(_ insertions: Object) throws {
@@ -123,24 +128,14 @@ class RealmRepository: DataSource, DataTransformable {
         }
     }
     
-    func convertListToResult<T>(with results: List<T>) -> [T] {
-        var data = [T]()
-        
-        for result in results {
-            data.append(result)
+    public func clearRealm() {
+        do {
+            try realm.write {
+                realm.deleteAll()
+            }
+        } catch let error {
+            print(error.localizedDescription)
         }
-        
-        return data
-    }
-    
-    func mapResults<T>(with results: [T]) -> List<T> {
-        let data = List<T>()
-        
-        for result in results {
-            data.append(result)
-        }
-        
-        return data
     }
 }
 
