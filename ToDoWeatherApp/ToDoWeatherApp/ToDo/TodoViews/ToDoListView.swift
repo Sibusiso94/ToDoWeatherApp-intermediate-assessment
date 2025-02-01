@@ -30,6 +30,13 @@ struct ToDoListView: View {
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
+                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                                 Button("Delete", systemImage: "trash") {
+                                                     viewModel.delete(taskId: item.id)
+                                                 }
+                                                 .tint(.red)
+                                             }
+                                       .enableScrollViewSwipeAction()
                             }
                             .padding()
                         }
@@ -50,6 +57,13 @@ struct ToDoListView: View {
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
+                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button("Delete", systemImage: "trash") {
+                                        viewModel.delete(taskId: item.id)
+                                    }
+                                    .tint(.red)
+                                }
+                          .enableScrollViewSwipeAction()
                             }
                             .padding()
                         }

@@ -3,6 +3,10 @@ import Combine
 import RealmSwift
 import OSLog
 
+enum ToDoListError: Error {
+    case failedToLoadData
+}
+
 class ToDoListViewModel: ObservableObject {
     let dataProvider = ToDoDataProvider()
     
@@ -51,6 +55,8 @@ class ToDoListViewModel: ObservableObject {
     func delete(taskId: String) {
         do {
             try dataProvider.delete(taskId)
+            fetchItem()
+            filterTasks()
         } catch let error {
             os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
             didFail = true
