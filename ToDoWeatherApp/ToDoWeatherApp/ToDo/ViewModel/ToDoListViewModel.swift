@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 import RealmSwift
+import OSLog
 
 class ToDoListViewModel: ObservableObject {
     let dataProvider = ToDoDataProvider()
@@ -13,31 +14,10 @@ class ToDoListViewModel: ObservableObject {
     @Published var didFail = false
     @Published var didSucceed = false
     
-//    private var cancellables = Set<AnyCancellable>()
-//    private var toDoResults: Results<ToDoItem>
-    
     init() {
         self.fetchItem()
         self.filterTasks()
-//        self.observeRealmChanges()
     }
-
-//    private func observeRealmChanges() {
-//        // Use Realm's Combine publisher
-//        let cancellable = toDoResults
-//            .collectionPublisher
-//            .freeze()
-//            .receive(on: DispatchQueue.main)  // Receive updates on the main thread
-//            .sink(receiveCompletion: { completion in
-//                if case let .failure(error) = completion {
-//                    print("Realm error: \(error.localizedDescription)")
-//                }
-//            }, receiveValue: { [weak self] tasks in
-//                self?.toDoTasks = Array(tasks)  // Trigger SwiftUI UI updates
-//            })
-//            .store(in: &cancellables)
-//    
-//    }
     
     func fetchItem() {
         allTasks = dataProvider.readAll()
@@ -52,6 +32,7 @@ class ToDoListViewModel: ObservableObject {
             didSucceed = true
             toDoTasks.append(newToDoItem)
         } catch {
+            os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
             didFail = true
         }
     }
@@ -62,21 +43,27 @@ class ToDoListViewModel: ObservableObject {
             fetchItem()
             filterTasks()
         } catch (let error) {
-            
+            os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
+            didFail = true
         }
     }
     
-//    func delete() {
-//        do {
-//            try dataProvider.delete(id, ofType: T.self)
-//        } catch let error {
-//            
-//        }
-//    }
+    func delete(taskId: String) {
+        do {
+            try dataProvider.delete(taskId)
+        } catch let error {
+            os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
+            didFail = true
+        }
+    }
     
     func filterTasks() {
         toDoTasks = allTasks.filter { $0.isCompleted == false }
         completedTasks = allTasks.filter { $0.isCompleted == true }
+    }
+    
+    func getItemIds() -> [String] {
+        return allTasks.map { $0.id }
     }
     
     func generateNewId() -> String {

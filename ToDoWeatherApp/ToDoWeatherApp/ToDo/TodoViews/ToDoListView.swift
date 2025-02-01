@@ -23,8 +23,10 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(title: item.title,
+                                ItemCardView(taskId: item.id,
+                                             title: item.title,
                                              description: item.todoDescription,
+                                             itemIds: viewModel.getItemIds(),
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
@@ -41,8 +43,10 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(title: item.title,
+                                ItemCardView(taskId: item.id,
+                                             title: item.title,
                                              description: item.todoDescription,
+                                             itemIds: viewModel.getItemIds(),
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
