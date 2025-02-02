@@ -2,7 +2,7 @@ import Foundation
 import RealmSwift
 import OSLog
 
-class ToDoDataProvider: DataSource {
+class ToDoDataProvider: DataProvider {
     let repository = RealmRepository()
     
     typealias T = ToDoItem

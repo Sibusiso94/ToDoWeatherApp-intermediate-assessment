@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-protocol DataSource: CreateObject, ReadObject, DeleteObject { }
+protocol DataProvider: CreateObject, ReadObject, DeleteObject { }
 
 protocol CreateObject {
     associatedtype T: Object

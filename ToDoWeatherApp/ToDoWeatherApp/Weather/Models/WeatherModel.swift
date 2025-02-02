@@ -9,15 +9,21 @@ struct WeatherModel: Codable {
 // MARK: - Current
 struct Current: Codable {
     let tempC, tempF: Double
+    let condition: Condition
     let humidity, cloud: Int
     let feelslikeC: Double
 
     enum CodingKeys: String, CodingKey {
         case tempC = "temp_c"
         case tempF = "temp_f"
+        case condition
         case humidity, cloud
         case feelslikeC = "feelslike_c"
     }
+}
+
+struct Condition: Codable {
+    let text: String
 }
 
 // MARK: - Forecast

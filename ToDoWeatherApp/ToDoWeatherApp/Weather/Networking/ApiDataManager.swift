@@ -1,9 +1,11 @@
 import Foundation
+import CoreLocation
 import OSLog
 
 class ApiDataManager {
     private let repository: RealmRepository
     private let networkingManager = NetworkManagerConcreation()
+//    private let locationManager = UserLocationManager()
     private let baseURL = "https://api.weatherapi.com/v1/forecast.json"
     
     var hasError: Bool = false
@@ -12,6 +14,14 @@ class ApiDataManager {
     init(repository: RealmRepository) {
         self.repository = repository
     }
+    
+//    func getLocation() {
+//        locationManager.requestLocation()
+//        if let location = locationManager.location {
+//            print("Your location: \(location.latitude), \(location.longitude)")
+////            CLGeocoder(location)
+//        }
+//    }
     
     func fetchApiData(location: String,
                       completion: @escaping (WeatherModel?, Error?) -> Void) {
