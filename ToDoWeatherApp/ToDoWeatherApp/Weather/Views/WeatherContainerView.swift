@@ -16,7 +16,7 @@ struct WeatherContainerView: View {
                         WeatherView(date: viewModel.date,
                                     time: viewModel.time,
                                     location: data.locationName,
-                                    condition: "cloud",
+                                    condition: viewModel.condition,
                                     temperature: "\(data.temperature)",
                                     feelsLike: "\(data.feelsLikeTemperature)",
                                     sunrise: data.sunriseTime,

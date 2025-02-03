@@ -31,7 +31,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
     @Published var weatherData: WeatherDomainModel?
     @Published var date: String = ""
     @Published var time: String = ""
-    @Published var condition: String = ""
+    @Published var condition: ConditionIcon = .sunny
     @Published var isLoading: Bool = false
 
     override init() {
@@ -45,6 +45,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
         let allData = dataProvider.readAll()
         if let data = allData.first {
             weatherData = data
+            setUpCondition()
         }
     }
     
@@ -55,7 +56,18 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
     }
     
     func setUpCondition() {
-    //
+        guard let data = weatherData else { return }
+        if data.condition.contains(ConditionsStrings.sunny.rawValue) {
+            condition = ConditionIcon.sunny
+        } else if data.condition.contains(ConditionsStrings.rainy.rawValue) {
+            condition = ConditionIcon.rainy
+        } else if data.condition.contains(ConditionsStrings.cloudy.rawValue) {
+            condition = ConditionIcon.cloudy
+        } else if data.condition.contains(ConditionsStrings.rainy.rawValue) {
+            condition = ConditionIcon.overcast
+        } else if data.condition.contains(ConditionsStrings.snow.rawValue) {
+            condition = ConditionIcon.snow
+        }
     }
 
     private func requestLocation() {
@@ -108,7 +120,6 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
                 self?.isLoading = false
             }
         }
-        
     }
 }
 

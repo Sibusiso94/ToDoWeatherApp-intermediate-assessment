@@ -33,11 +33,15 @@ class ToDoListViewModel: ObservableObject {
         var newToDoItem = ToDoItem(id: newId,
                                    title: newItem.title,
                                    todoDescription: newItem.todoDescription)
+        persistItem(newToDoItem)
+        toDoTasks.append(newToDoItem)
+        allTasksIds.append(newId)
+    }
+    
+    private func persistItem(_ newToDoItem: ToDoItem) {
         do {
             try dataProvider.create(newToDoItem)
             didSucceed = true
-            toDoTasks.append(newToDoItem)
-            allTasksIds.append(newId)
         } catch {
             os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
             didFail = true

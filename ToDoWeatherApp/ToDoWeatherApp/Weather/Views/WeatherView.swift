@@ -5,7 +5,7 @@ struct WeatherView: View {
     var time: String
     var location: String
     
-    var condition: String
+    var condition: ConditionIcon
     var temperature: String
     
     var feelsLike: String
@@ -15,7 +15,7 @@ struct WeatherView: View {
     init(date: String,
          time: String,
          location: String,
-         condition: String,
+         condition: ConditionIcon,
          temperature: String,
          feelsLike: String,
          sunrise: String,
@@ -37,7 +37,7 @@ struct WeatherView: View {
                                  title: time,
                                  subheading: location)
                 
-                createMiddleSection(imageName: condition, title: "\(temperature)°C")
+                createMiddleSection(imageName: condition.rawValue, title: "\(temperature)°C")
                 
                 createBottomSection(heading: "Feels like: \(feelsLike)°C",
                                     title1: "Sunrise",

@@ -4,19 +4,19 @@ import RealmSwift
 
 final class RealmRepositoryTests: XCTestCase {
     var viewModel: ToDoListViewModel! = nil
-//    var repository: RealmRepository! = nil
+    var repository: RealmRepository! = nil
 
     override func setUpWithError() throws {
         super.setUp()
-//        let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
-//        repository = RealmRepository()
-//        repository.realm = try! Realm(configuration: config)
-//        viewModel = ToDoListViewModel()
+        let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
+        repository = RealmRepository()
+        repository.realm = try! Realm(configuration: config)
+        viewModel = ToDoListViewModel()
         
     }
 
     override func tearDownWithError() throws {
-//        viewModel.repository.clearRealm()
+        repository.clearRealm()
         super.tearDown()
     }
 
@@ -26,8 +26,9 @@ final class RealmRepositoryTests: XCTestCase {
         viewModel.addToDoItem()
         
 //        let updatedItem = repository.realm.objects(ToDoItem.self).first
-        XCTAssertEqual(viewModel.newItem.title, "Make food")
-        XCTAssertEqual(viewModel.newItem.todoDescription, "Prep pasta and mince and make lasagna")
+        XCTAssertEqual(viewModel.toDoTasks[0].title, "Make food")
+        XCTAssertEqual(viewModel.toDoTasks[0].todoDescription, "Prep pasta and mince and make lasagna")
+        XCTAssertEqual(viewModel.allTasksIds[0], viewModel.toDoTasks[0].id)
     }
 
     func testPerformanceExample() throws {
