@@ -1,24 +1,23 @@
 import SwiftUI
 
 struct ToDoListView: View {
-    @StateObject var viewModel = ToDoListViewModel()
-    @State var showPopup = false
+    @StateObject var viewModel: ToDoListViewModel
+    @State var showPopup: Bool
+    
+    init() {
+        _viewModel = StateObject(wrappedValue: ToDoListViewModel())
+        _showPopup = State(initialValue: false)
+    }
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 if viewModel.toDoTasks.isEmpty {
-                    Button {
-                        showPopup.toggle()
-                    } label: {
-                        Text("Add Task")
-                    }
-                    .padding(.horizontal)
-                    .frame(minHeight: 50)
-                    .background(.gray.opacity(0.5))
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                    .background(RoundedRectangle(cornerRadius: 5).stroke().opacity(0.5))
-                    .foregroundStyle(.black)
+                    Spacer()
+                    Text("No Tasks Added")
+                        .font(.largeTitle)
+                        .opacity(0.5)
+                    Spacer()
                 } else {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
@@ -26,7 +25,7 @@ struct ToDoListView: View {
                                 ItemCardView(taskId: item.id,
                                              title: item.title,
                                              description: item.todoDescription,
-                                             itemIds: viewModel.getItemIds(),
+                                             itemIds: viewModel.allTasksIds,
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
@@ -53,7 +52,7 @@ struct ToDoListView: View {
                                 ItemCardView(taskId: item.id,
                                              title: item.title,
                                              description: item.todoDescription,
-                                             itemIds: viewModel.getItemIds(),
+                                             itemIds: viewModel.allTasksIds,
                                              isCompleted: item.isCompleted) { newValue in
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }

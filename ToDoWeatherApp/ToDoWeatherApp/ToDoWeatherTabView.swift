@@ -17,7 +17,7 @@ struct ToDoWeatherTabView: View {
                 }
                 .tag(ToDoWeatherTabItem.todo)
             
-            WeatherView()
+            WeatherContainerView()
                 .tabItem {
                     Image(systemName: "sun.haze.fill")
                     Text("Weather")

@@ -10,6 +10,12 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         manager.delegate = self
+        fecthWeatcherData()
+    }
+    
+    func fecthWeatcherData() {
+        let data = dataProvider.readAll()
+        print(data)
     }
 
     func requestLocation() {

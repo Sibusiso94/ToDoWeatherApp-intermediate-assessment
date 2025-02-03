@@ -31,13 +31,14 @@ struct AddTaskView: View {
                     action()
                 } label: {
                     Text("Add Task")
+                        .padding()
                 }
-                .padding(.horizontal)
-                .frame(minHeight: 50)
-                .background(.gray.opacity(0.5))
-                .clipShape(RoundedRectangle(cornerRadius: 5))
-                .background(RoundedRectangle(cornerRadius: 5).stroke().opacity(0.5))
-                .foregroundStyle(.black)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .foregroundStyle(.white)
+                .background(.blue.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

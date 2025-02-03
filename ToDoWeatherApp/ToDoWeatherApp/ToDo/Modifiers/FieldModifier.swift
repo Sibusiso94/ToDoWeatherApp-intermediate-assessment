@@ -7,7 +7,7 @@ struct FieldModifier: ViewModifier {
         content
             .padding(.horizontal)
             .frame(minHeight: minHeight)
-            .background(RoundedRectangle(cornerRadius: 5).stroke().opacity(0.5))
+            .background(RoundedRectangle(cornerRadius: 8).stroke().opacity(0.5))
             .padding()
     }
 }

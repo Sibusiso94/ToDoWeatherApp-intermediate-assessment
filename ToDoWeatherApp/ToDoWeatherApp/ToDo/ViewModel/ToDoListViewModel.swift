@@ -11,6 +11,7 @@ class ToDoListViewModel: ObservableObject {
     let dataProvider = ToDoDataProvider()
     
     @Published var allTasks: [ToDoItem] = []
+    @Published var allTasksIds: [String] = []
     @Published var toDoTasks: [ToDoItem] = []
     @Published var completedTasks: [ToDoItem] = []
     @Published var newItem = ToDoItem()
@@ -28,13 +29,15 @@ class ToDoListViewModel: ObservableObject {
     }
     
     func addToDoItem() {
-        var newToDoItem = ToDoItem(id: generateNewId(),
+        let newId = generateNewId()
+        var newToDoItem = ToDoItem(id: newId,
                                    title: newItem.title,
                                    todoDescription: newItem.todoDescription)
         do {
             try dataProvider.create(newToDoItem)
             didSucceed = true
             toDoTasks.append(newToDoItem)
+            allTasksIds.append(newId)
         } catch {
             os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
             didFail = true
@@ -66,10 +69,11 @@ class ToDoListViewModel: ObservableObject {
     func filterTasks() {
         toDoTasks = allTasks.filter { $0.isCompleted == false }
         completedTasks = allTasks.filter { $0.isCompleted == true }
+        getItemIds()
     }
     
-    func getItemIds() -> [String] {
-        return allTasks.map { $0.id }
+    func getItemIds() {
+        allTasksIds = allTasks.map { $0.id }
     }
     
     func generateNewId() -> String {

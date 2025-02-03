@@ -2,29 +2,62 @@ import SwiftUI
 import CoreLocationUI
 
 struct WeatherView: View {
-    @StateObject var viewModel = WeatherViewModel()
+    var date: String
+    var time: String
+    var location: String
+    
+    var condition: String
+    var temperature: String
+    
+    var feelsLike: String
+    var sunrise: String
+    var sunset: String
+    
+    var action: () -> Void
+    
+    init(date: String,
+         time: String,
+         location: String,
+         condition: String,
+         temperature: String,
+         feelsLike: String,
+         sunrise: String,
+         sunset: String,
+         action: @escaping () -> Void) {
+        self.date = date
+        self.time = time
+        self.location = location
+        self.condition = condition
+        self.temperature = temperature
+        self.feelsLike = feelsLike
+        self.sunrise = sunrise
+        self.sunset = sunset
+        self.action = action
+    }
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 50) {
-                createTopSection(header: "Monday, 27th April",
-                                 title: "6:27am",
-                                 subheading: "London")
+                createTopSection(header: date,
+                                 title: time,
+                                 subheading: location)
                 
-                createMiddleSection(imageName: "cloud", title: "19°C")
+                createMiddleSection(imageName: condition, title: "\(temperature)°C")
                 
-                createBottomSection(heading: "Feels like: 38°C",
+                createBottomSection(heading: "Feels like: \(feelsLike)°C",
                                     title1: "Sunrise",
-                                    subtitle1: "05:25",
+                                    subtitle1: sunrise,
                                     title2: "Sunrise",
-                                    subtitle2: "18:47")
+                                    subtitle2: sunset)
                 
                 LocationButton(.currentLocation) {
-                    viewModel.fetchWeatherData(from: "Johannesburg")
+                    action()
                 }
-//                Button("Click") {
-//                    viewModel.fetchWeatherData(from: "Johannesburg")
-//                }
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .labelStyle(.titleAndIcon)
+                .symbolVariant(.fill)
+                .tint(.blue.opacity(0.5))
             }
         }
     }
@@ -47,7 +80,7 @@ extension WeatherView {
     
     @ViewBuilder
     func createMiddleSection(imageName: String,
-                          title: String) -> some View {
+                             title: String) -> some View {
         VStack(spacing: 8) {
             Image(systemName: imageName)
                 .resizable()
@@ -60,10 +93,10 @@ extension WeatherView {
     
     @ViewBuilder
     func createBottomSection(heading: String,
-                          title1: String,
-                         subtitle1: String,
-                         title2: String,
-                         subtitle2: String) -> some View {
+                             title1: String,
+                             subtitle1: String,
+                             title2: String,
+                             subtitle2: String) -> some View {
         VStack {
             Text(heading)
             Divider()
@@ -85,8 +118,4 @@ extension WeatherView {
             }
         }
     }
-}
-
-#Preview {
-    WeatherView()
 }

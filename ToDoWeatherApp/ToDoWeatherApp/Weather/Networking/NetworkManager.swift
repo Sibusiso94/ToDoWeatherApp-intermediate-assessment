@@ -14,7 +14,6 @@ enum ApiError: LocalizedError {
     case failedToDecode
     case noDataReceived
     case invalidUrl
-    case fileValidationFailure
     case custom(error: Error)
     case invalidResponse(response: String)
     
@@ -26,8 +25,6 @@ enum ApiError: LocalizedError {
             return "No data received"
         case .invalidUrl:
             return "Invalid URL"
-        case .fileValidationFailure:
-            return "The file could not be validated.\nPlease try again."
         case .invalidResponse(let response):
             return "Invalid response received: \(response)"
         case .custom(let error):
