@@ -6,38 +6,30 @@ class WeatherDataProvider: DataProvider {
     private let repository = RealmRepository()
 //    let locationManager = UserLocationManager()
     let apiManager: ApiDataManager
+    var isLoading = false
     
     init() {
         self.apiManager = ApiDataManager(repository: repository)
     }
     
-    func fetchWeatherData(_ location: String) {
-        fetchData(location)
-    }
+//    func fetchWeatherData(_ location: String) {
+//        fetchData(location)
+//    }
     
-    private func fetchData(_ location: String)  {
+    func fetchData(_ location: String, completion: @escaping (WeatherModel?, Error?) -> Void)  {
+        isLoading = true
         apiManager.fetchApiData(location: location) { data, error in
-            if let error {
-                print(error)
-            }
-            
-            if let data {
-                self.persistWeatherModel(name: data.location.name,
-                                    condition: data.current.condition.text,
-                                         temperature: data.current.tempC,
-                                         feelsLike: data.current.feelslikeC,
-                                         sunriseTime: data.forecast.forecastday[0].astro.sunrise,
-                                         sunsetTime: data.forecast.forecastday[0].astro.sunset)
-            }
+            completion(data, error)
         }
     }
     
-    private func persistWeatherModel(name: String,
+    func persistWeatherModel(name: String,
                                      condition: String,
                                      temperature: Double,
                                      feelsLike: Double,
                                      sunriseTime: String,
-                                     sunsetTime: String) {
+                             sunsetTime: String,
+                             completion: @escaping (WeatherDomainModel?, Error?) -> Void) {
         let newId = UUID().uuidString
         let newWeatherData = WeatherDomainModel(id: newId,
                                                 locationName: name,
@@ -48,8 +40,9 @@ class WeatherDataProvider: DataProvider {
                                                 sunsetTime: sunsetTime)
         do {
             try create(newWeatherData)
+            completion(newWeatherData, nil)
         } catch {
-            //
+            completion(nil, error)
         }
     }
     
@@ -58,6 +51,7 @@ class WeatherDataProvider: DataProvider {
 //    }
     
     internal func create(_ object: WeatherDomainModel) throws {
+        clearRealm()
         do {
             try repository.create(object)
         } catch {
@@ -70,8 +64,14 @@ class WeatherDataProvider: DataProvider {
     }
     
     func delete(_ id: String) throws {
-        //
+        do {
+            try repository.delete(id, ofType: T.self)
+        } catch {
+            // Handle
+        }
     }
     
-    
+    func clearRealm() {
+        repository.clearRealm()
+    }
 }

@@ -1,5 +1,4 @@
 import SwiftUI
-import CoreLocationUI
 
 struct WeatherView: View {
     var date: String
@@ -13,8 +12,6 @@ struct WeatherView: View {
     var sunrise: String
     var sunset: String
     
-    var action: () -> Void
-    
     init(date: String,
          time: String,
          location: String,
@@ -22,8 +19,7 @@ struct WeatherView: View {
          temperature: String,
          feelsLike: String,
          sunrise: String,
-         sunset: String,
-         action: @escaping () -> Void) {
+         sunset: String) {
         self.date = date
         self.time = time
         self.location = location
@@ -32,7 +28,6 @@ struct WeatherView: View {
         self.feelsLike = feelsLike
         self.sunrise = sunrise
         self.sunset = sunset
-        self.action = action
     }
     
     var body: some View {
@@ -49,15 +44,6 @@ struct WeatherView: View {
                                     subtitle1: sunrise,
                                     title2: "Sunrise",
                                     subtitle2: sunset)
-                
-                LocationButton(.currentLocation) {
-                    action()
-                }
-                .foregroundStyle(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .labelStyle(.titleAndIcon)
-                .symbolVariant(.fill)
-                .tint(.blue.opacity(0.5))
             }
         }
     }
@@ -99,6 +85,7 @@ extension WeatherView {
                              subtitle2: String) -> some View {
         VStack {
             Text(heading)
+                .opacity(0.4)
             Divider()
                 .padding(.horizontal, 50)
             
@@ -106,12 +93,14 @@ extension WeatherView {
                 Spacer()
                 VStack {
                     Text(title1)
+                        .opacity(0.4)
                     Text(subtitle1)
                 }
                 Spacer()
                 
                 VStack {
                     Text(title2)
+                        .opacity(0.4)
                     Text(subtitle2)
                 }
                 Spacer()

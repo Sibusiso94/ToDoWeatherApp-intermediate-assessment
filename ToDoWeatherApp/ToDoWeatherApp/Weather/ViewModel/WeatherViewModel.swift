@@ -2,41 +2,113 @@ import Foundation
 import CoreLocation
 import CoreLocationUI
 
-class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+enum ConditionIcon: String {
+    case sunny = "sun.max"
+    case cloudy, overcast = "cloud"
+    case rainy = "cloud.rain"
+    case snow = "snow"
+}
+
+enum ConditionsStrings: String {
+    case sunny = "sunny"
+    case cloudy, overcast = "cloud"
+    case rainy = "rain"
+    case snow = "snow"
+}
+
+protocol WeatherViewModelManager {
+    func fetchWeatherData()
+    func setUpDates()
+    func setUpCondition()
+}
+
+class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, WeatherViewModelManager {
     let dataProvider = WeatherDataProvider()
+    let dateManager = DateManager()
     let manager = CLLocationManager()
     var location: CLLocationCoordinate2D?
+    
+    @Published var weatherData: WeatherDomainModel?
+    @Published var date: String = ""
+    @Published var time: String = ""
+    @Published var condition: String = ""
+    @Published var isLoading: Bool = false
 
     override init() {
         super.init()
         manager.delegate = self
-        fecthWeatcherData()
+        fecthCachedWeatcherData()
+        setUpDates()
     }
     
-    func fecthWeatcherData() {
-        let data = dataProvider.readAll()
-        print(data)
+    func fecthCachedWeatcherData() {
+        let allData = dataProvider.readAll()
+        if let data = allData.first {
+            weatherData = data
+        }
+    }
+    
+    func setUpDates() {
+        // Combine
+        date = dateManager.getCompleteDate()
+        time = dateManager.getTime()
+    }
+    
+    func setUpCondition() {
+    //
     }
 
-    func requestLocation() {
+    private func requestLocation() {
         manager.requestLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.first?.coordinate
-        let latitude = Double(location?.latitude ?? 0.0)
-        let longitude = Double(location?.longitude ?? 0.0)
-        dataProvider.fetchWeatherData("\(latitude),\(longitude)")
+        setUpLocation(location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Failed to get location: \(error.localizedDescription)")
     }
     
-    func fetchWeatherData(from location: String) {
+    func fetchWeatherData() {
         // Add group so only triggers when requestion is done
         requestLocation()
     }
     
+    private func setUpLocation(_ location: CLLocationCoordinate2D?) {
+        isLoading = true
+        let latitude = Double(location?.latitude ?? 0.0)
+        let longitude = Double(location?.longitude ?? 0.0)
+        dataProvider.fetchData("\(latitude),\(longitude)") { [weak self] data, error in
+            if let error {
+                self?.isLoading = false
+                print(error)
+            }
+            
+            self?.persistData(data: data)
+        }
+    }
+    
+    private func persistData(data: WeatherModel?) {
+        guard let data = data else { return }
+        dataProvider.persistWeatherModel(name: data.location.name,
+                                         condition: data.current.condition.text,
+                                         temperature: data.current.tempC,
+                                         feelsLike: data.current.feelslikeC,
+                                         sunriseTime: data.forecast.forecastday[0].astro.sunrise,
+                                         sunsetTime: data.forecast.forecastday[0].astro.sunset) { [weak self] data, error in
+            if let error {
+                print("Error persisting data: \(error)")
+                self?.isLoading = false
+            }
+            
+            if let data {
+                self?.weatherData = data
+                self?.isLoading = false
+            }
+        }
+        
+    }
 }
 
