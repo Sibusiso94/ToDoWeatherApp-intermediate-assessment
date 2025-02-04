@@ -38,7 +38,7 @@ class ToDoListViewModel: ObservableObject {
         allTasksIds.append(newId)
     }
     
-    private func persistItem(_ newToDoItem: ToDoItem) {
+    func persistItem(_ newToDoItem: ToDoItem) {
         do {
             try dataProvider.create(newToDoItem)
             didSucceed = true

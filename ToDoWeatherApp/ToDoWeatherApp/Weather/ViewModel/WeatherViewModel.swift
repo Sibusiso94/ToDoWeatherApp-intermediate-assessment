@@ -16,6 +16,10 @@ enum ConditionsStrings: String {
     case snow = "snow"
 }
 
+enum WeatherErrors {
+    
+}
+
 protocol WeatherViewModelManager {
     func fetchWeatherData()
     func setUpDates()
@@ -33,6 +37,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
     @Published var time: String = ""
     @Published var condition: ConditionIcon = .sunny
     @Published var isLoading: Bool = false
+    @Published var didFail: Bool = false
 
     override init() {
         super.init()
@@ -95,7 +100,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
         dataProvider.fetchData("\(latitude),\(longitude)") { [weak self] data, error in
             if let error {
                 self?.isLoading = false
-                print(error)
+                self?.didFail = true
             }
             
             self?.persistData(data: data)
@@ -113,6 +118,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
             if let error {
                 print("Error persisting data: \(error)")
                 self?.isLoading = false
+                self?.didFail = true
             }
             
             if let data {
