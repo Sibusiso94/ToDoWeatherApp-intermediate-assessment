@@ -21,21 +21,32 @@ final class RealmRepositoryTests: XCTestCase {
     }
 
     func testAddingFunctionAddsItemsSuccessfully() throws {
-        repository.clearRealm()
+//        let expectation = expectation(description: "Complete writing to realm")
         viewModel.newItem = ToDoItem(title: "Make food", todoDescription: "Prep pasta and mince and make lasagna")
         
-        viewModel.addToDoItem()
+//        DispatchQueue.global(qos: .background).async {
+            self.viewModel.addToDoItem()
+//            expectation.fulfill()
+//        }
         
-//        let updatedItem = repository.realm.objects(ToDoItem.self).first
+//        waitForExpectations(timeout: 5, handler: nil)
+        
+        //        let updatedItem = repository.realm.objects(ToDoItem.self).first
         XCTAssertEqual(viewModel.toDoTasks[0].title, "Make food")
         XCTAssertEqual(viewModel.toDoTasks[0].todoDescription, "Prep pasta and mince and make lasagna")
         XCTAssertEqual(viewModel.allTasksIds[0], viewModel.toDoTasks[0].id)
     }
     
     func testTasksUpdate() throws {
+//        let expectation = expectation(description: "Complete writing to realm")
         setUpMockData()
         
-        viewModel.updateTask(taskId: "2", isTaskComplete: true)
+//        DispatchQueue.global(qos: .background).async {
+            self.viewModel.updateTask(taskId: "2", isTaskComplete: true)
+//            expectation.fulfill()
+//        }
+        
+//        wait(for: [expectation], timeout: 5.0)
         
         XCTAssertEqual(viewModel.toDoTasks.count, 0)
         XCTAssertEqual(viewModel.completedTasks.count, 3)

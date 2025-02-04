@@ -1,5 +1,13 @@
 import SwiftUI
 
+enum ConditionIcon: String {
+    case sunny = "sun.max"
+    case cloudy, overcast
+    case cloud
+    case rainy = "cloud.rain"
+    case snow = "snow"
+}
+
 struct WeatherView: View {
     var date: String
     var time: String
@@ -8,7 +16,7 @@ struct WeatherView: View {
     var condition: ConditionIcon
     var temperature: String
     
-    var feelsLike: String
+    var conditionDescription: String
     var sunrise: String
     var sunset: String
     
@@ -17,7 +25,7 @@ struct WeatherView: View {
          location: String,
          condition: ConditionIcon,
          temperature: String,
-         feelsLike: String,
+         conditionDescription: String,
          sunrise: String,
          sunset: String) {
         self.date = date
@@ -25,7 +33,7 @@ struct WeatherView: View {
         self.location = location
         self.condition = condition
         self.temperature = temperature
-        self.feelsLike = feelsLike
+        self.conditionDescription = conditionDescription
         self.sunrise = sunrise
         self.sunset = sunset
     }
@@ -39,7 +47,7 @@ struct WeatherView: View {
                 
                 createMiddleSection(imageName: condition.rawValue, title: "\(temperature)°C")
                 
-                createBottomSection(heading: "Feels like: \(feelsLike)°C",
+                createBottomSection(heading: conditionDescription,
                                     title1: "Sunrise",
                                     subtitle1: sunrise,
                                     title2: "Sunrise",

@@ -18,7 +18,7 @@ struct WeatherContainerView: View {
                                     location: data.locationName,
                                     condition: viewModel.condition,
                                     temperature: "\(data.temperature)",
-                                    feelsLike: "\(data.feelsLikeTemperature)",
+                                    conditionDescription: data.condition,
                                     sunrise: data.sunriseTime,
                                     sunset: data.sunsetTime)
                     }
@@ -47,6 +47,9 @@ struct WeatherContainerView: View {
                     .background(.gray.opacity(0.7))
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
+            }
+            .alert("Something went wrong. \nplease try again later", isPresented: $viewModel.didFail) {
+                Button("OK", role: .cancel) { }
             }
         }
     }

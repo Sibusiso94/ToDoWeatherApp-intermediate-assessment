@@ -2,16 +2,9 @@ import Foundation
 import CoreLocation
 import CoreLocationUI
 
-enum ConditionIcon: String {
-    case sunny = "sun.max"
-    case cloudy, overcast = "cloud"
-    case rainy = "cloud.rain"
-    case snow = "snow"
-}
-
 enum ConditionsStrings: String {
     case sunny = "sunny"
-    case cloudy, overcast = "cloud"
+    case overcast = "cloud"
     case rainy = "rain"
     case snow = "snow"
 }
@@ -66,7 +59,9 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
             condition = ConditionIcon.sunny
         } else if data.condition.contains(ConditionsStrings.rainy.rawValue) {
             condition = ConditionIcon.rainy
-        } else if data.condition.contains(ConditionsStrings.cloudy.rawValue) {
+        } else if data.condition.contains("cloud") {
+            condition = ConditionIcon.cloud
+        } else if data.condition.contains("cloudy") {
             condition = ConditionIcon.cloudy
         } else if data.condition.contains(ConditionsStrings.rainy.rawValue) {
             condition = ConditionIcon.overcast
