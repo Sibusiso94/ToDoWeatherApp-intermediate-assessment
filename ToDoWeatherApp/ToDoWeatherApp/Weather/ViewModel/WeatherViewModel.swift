@@ -14,6 +14,10 @@ enum WeatherErrors {
 }
 
 protocol WeatherViewModelManager {
+    var weatherData: WeatherDomainModel? { get set }
+    var isLoading: Bool { get set }
+    var didFail: Bool { get set }
+    
     func fetchWeatherData()
     func setUpDates()
     func setUpCondition()
@@ -62,7 +66,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
         } else if data.condition.contains("cloud") {
             condition = ConditionIcon.cloud
         } else if data.condition.contains("cloudy") {
-            condition = ConditionIcon.cloudy
+            condition = ConditionIcon.cloud
         } else if data.condition.contains(ConditionsStrings.rainy.rawValue) {
             condition = ConditionIcon.overcast
         } else if data.condition.contains(ConditionsStrings.snow.rawValue) {
@@ -74,9 +78,10 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
         manager.requestLocation()
     }
 
+#warning("Move to manager")
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.first?.coordinate
-        setUpLocation(location)
+        fetchWeatherInformation(location)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
@@ -88,7 +93,7 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
         requestLocation()
     }
     
-    private func setUpLocation(_ location: CLLocationCoordinate2D?) {
+    func fetchWeatherInformation(_ location: CLLocationCoordinate2D?) {
         isLoading = true
         let latitude = Double(location?.latitude ?? 0.0)
         let longitude = Double(location?.longitude ?? 0.0)

@@ -2,26 +2,16 @@ import Foundation
 import CoreLocation
 import OSLog
 
-class ApiDataManager {
-    private let repository: RealmRepository
+protocol ApiDataProvider {
+    var baseURL: String { get }
+    func fetchApiData(location: String,
+                      completion: @escaping (WeatherModel?, Error?) -> Void)
+}
+
+class ApiDataManager: ApiDataProvider {
     private let networkingManager = NetworkManagerConcreation()
-//    private let locationManager = UserLocationManager()
-    private let baseURL = "https://api.weatherapi.com/v1/forecast.json"
-    
-    var hasError: Bool = false
+    internal let baseURL = "https://api.weatherapi.com/v1/forecast.json"
     var error: ApiError?
-    
-    init(repository: RealmRepository) {
-        self.repository = repository
-    }
-    
-//    func getLocation() {
-//        locationManager.requestLocation()
-//        if let location = locationManager.location {
-//            print("Your location: \(location.latitude), \(location.longitude)")
-////            CLGeocoder(location)
-//        }
-//    }
     
     func fetchApiData(location: String,
                       completion: @escaping (WeatherModel?, Error?) -> Void) {
@@ -44,7 +34,6 @@ class ApiDataManager {
                     os_log("API called successfully")
                 case .failure(let error):
                     os_log("%@", type: .debug, self?.networkingManager.error.debugDescription ?? "")
-                    self?.hasError = self?.networkingManager.hasError ?? true
                     self?.error = error
                     completion(nil, error)
                 }

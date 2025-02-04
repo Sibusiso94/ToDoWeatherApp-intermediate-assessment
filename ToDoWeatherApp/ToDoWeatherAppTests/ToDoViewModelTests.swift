@@ -2,7 +2,7 @@ import XCTest
 import RealmSwift
 @testable import ToDoWeatherApp
 
-final class RealmRepositoryTests: XCTestCase {
+final class ToDoViewModelTests: XCTestCase {
     var viewModel: ToDoListViewModel! = nil
     var repository: RealmRepository! = nil
     let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
@@ -20,24 +20,17 @@ final class RealmRepositoryTests: XCTestCase {
         super.tearDown()
     }
 
-    func testAddingFunctionAddsItemsSuccessfully() throws {
-//        let expectation = expectation(description: "Complete writing to realm")
+    func testGivenAddingDataThenAddsItemsTotoDoTasksSuccessfully() throws {
         viewModel.newItem = ToDoItem(title: "Make food", todoDescription: "Prep pasta and mince and make lasagna")
         
-//        DispatchQueue.global(qos: .background).async {
-            self.viewModel.addToDoItem()
-//            expectation.fulfill()
-//        }
+        self.viewModel.addToDoItem()
         
-//        waitForExpectations(timeout: 5, handler: nil)
-        
-        //        let updatedItem = repository.realm.objects(ToDoItem.self).first
         XCTAssertEqual(viewModel.toDoTasks[0].title, "Make food")
         XCTAssertEqual(viewModel.toDoTasks[0].todoDescription, "Prep pasta and mince and make lasagna")
         XCTAssertEqual(viewModel.allTasksIds[0], viewModel.toDoTasks[0].id)
     }
     
-    func testTasksUpdate() throws {
+    func testGivenTasksIsCompletedThenToDoTaskIsEmpty() throws {
 //        let expectation = expectation(description: "Complete writing to realm")
         setUpMockData()
         
@@ -52,7 +45,7 @@ final class RealmRepositoryTests: XCTestCase {
         XCTAssertEqual(viewModel.completedTasks.count, 3)
     }
     
-    func testItemIdsAreStoredConsistently() throws {
+    func testGivenItemsAddedWhenIdsAreSortedThenIdsAppendsToAllTasksIds() throws {
         setUpMockData()
         viewModel.getItemIds()
         

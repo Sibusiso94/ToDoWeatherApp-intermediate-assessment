@@ -2,14 +2,14 @@ import Foundation
 
 class WeatherDataProvider: DataProvider {
     typealias T = WeatherDomainModel
-    
-    private let repository = RealmRepository()
+#warning("Pass in repo and refactor")
+    let repository: RealmRepository
 //    let locationManager = UserLocationManager()
-    let apiManager: ApiDataManager
+    let apiManager = ApiDataManager()
     var isLoading = false
     
-    init() {
-        self.apiManager = ApiDataManager(repository: repository)
+    init(_ repository: RealmRepository = RealmRepository()) {
+        self.repository = repository
     }
     
 //    func fetchWeatherData(_ location: String) {
