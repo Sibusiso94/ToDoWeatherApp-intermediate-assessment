@@ -50,9 +50,10 @@ class ToDoListViewModel: ObservableObject {
     
     func updateTask(taskId: String, isTaskComplete: Bool) {
         do {
-            try dataProvider.update(taskId: taskId, isTasksComplete: isTaskComplete)
-            fetchItem()
-            filterTasks()
+            try dataProvider.update(taskId: taskId, isTasksComplete: isTaskComplete) {
+                self.fetchItem()
+                self.filterTasks()
+            }
         } catch (let error) {
             os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
             didFail = true

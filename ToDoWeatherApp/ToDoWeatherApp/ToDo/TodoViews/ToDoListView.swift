@@ -22,11 +22,9 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(taskId: item.id,
-                                             title: item.title,
-                                             description: item.todoDescription,
-                                             itemIds: viewModel.allTasksIds,
-                                             isCompleted: item.isCompleted) { newValue in
+                                ItemCardView(item: item,
+                                             itemIds: viewModel.allTasksIds) { newValue in
+//                                    viewModel.toDoTasks[index].isCompleted.toggle()
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
                                              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -49,11 +47,9 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(taskId: item.id,
-                                             title: item.title,
-                                             description: item.todoDescription,
-                                             itemIds: viewModel.allTasksIds,
-                                             isCompleted: item.isCompleted) { newValue in
+                                ItemCardView(item: item,
+                                             itemIds: viewModel.allTasksIds) { newValue in
+//                                    viewModel.toDoTasks[index].isCompleted.toggle()
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
                                              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
