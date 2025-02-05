@@ -61,6 +61,7 @@
 		821E69CE2D4D12520095423F /* ToDoWeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoWeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		821E69D82D4D12520095423F /* ToDoWeatherAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoWeatherAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8256E1D32D529B2500D56251 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		826B3B052D539ABE00C6B627 /* ToDoWeatherApp.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDoWeatherApp.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -111,6 +112,7 @@
 		821E69B42D4D124F0095423F = {
 			isa = PBXGroup;
 			children = (
+				826B3B052D539ABE00C6B627 /* ToDoWeatherApp.xctestplan */,
 				8256E1D22D529B2500D56251 /* Localizable.strings */,
 				821E69BF2D4D124F0095423F /* ToDoWeatherApp */,
 				821E69D12D4D12520095423F /* ToDoWeatherAppTests */,

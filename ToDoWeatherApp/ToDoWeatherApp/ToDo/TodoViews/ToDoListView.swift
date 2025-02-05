@@ -10,10 +10,56 @@ struct ToDoListView: View {
         _viewModel = StateObject(wrappedValue: ToDoListViewModel())
         _showPopup = State(initialValue: false)
         _showDeleteAlert = State(initialValue: false)
+        print(Date.now)
     }
     
     var body: some View {
         NavigationStack {
+//            VStack {
+//                List {
+//                    if viewModel.toDoTasks.isEmpty {
+//                        Spacer()
+//                            .listRowSeparator(.hidden)
+//                        Text("No Tasks Added")
+//                            .font(.largeTitle)
+//                            .opacity(0.5)
+//                            .listRowSeparator(.hidden)
+//                        Spacer()
+//                            .listRowSeparator(.hidden)
+//                    } else {
+//                        Section(header: Text("To do")) {
+//                            ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
+//                                ItemCardView(item: item,
+//                                             itemIds: viewModel.allTasksIds) { newValue in
+//                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+//                                }
+//                                
+//                            }
+//                            .listRowSeparator(.hidden)
+//                        }
+//                    }
+//                    
+//                    if !viewModel.completedTasks.isEmpty {
+//                        Section(header: Text("Completed")) {
+//                            ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
+//                                ItemCardView(item: item,
+//                                             itemIds: viewModel.allTasksIds) { newValue in
+//                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+//                                }
+//                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+//                                                 Button("Delete", systemImage: "trash") {
+//                                                     viewModel.delete(taskId: item.id)
+//                                                 }
+//                                                 .tint(.red)
+//                                             }
+//                                             .enableScrollViewSwipeAction()
+//                            }
+//                            .listRowSeparator(.hidden)
+//                        }
+//                    }
+//                }
+//                .listStyle(PlainListStyle())
+//            }
             ScrollView {
                 if viewModel.toDoTasks.isEmpty {
                     Spacer()

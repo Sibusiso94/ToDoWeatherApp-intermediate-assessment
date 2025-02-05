@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "DF6D12C3-B66A-4236-858D-FDB380D18521",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ToDoWeatherApp.xcodeproj",
+      "identifier" : "821E69BC2D4D124F0095423F",
+      "name" : "ToDoWeatherApp"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ToDoWeatherApp.xcodeproj",
+        "identifier" : "821E69CD2D4D12520095423F",
+        "name" : "ToDoWeatherAppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:ToDoWeatherApp.xcodeproj",
+        "identifier" : "821E69D72D4D12520095423F",
+        "name" : "ToDoWeatherAppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

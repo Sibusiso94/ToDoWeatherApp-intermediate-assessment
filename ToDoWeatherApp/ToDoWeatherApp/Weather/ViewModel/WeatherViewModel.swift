@@ -18,7 +18,7 @@ protocol WeatherViewModelManager {
     var isLoading: Bool { get set }
     var didFail: Bool { get set }
     
-    func fetchWeatherData()
+    func fetchWeatherInformation(_ location: CLLocationCoordinate2D?)
     func setUpDates()
     func setUpCondition()
 }
