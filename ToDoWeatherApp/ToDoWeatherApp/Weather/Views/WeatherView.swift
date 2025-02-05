@@ -68,13 +68,11 @@ extension WeatherView {
             Text(header)
                 .font(.headline)
                 .lineLimit(2)
-                .minimumScaleFactor(0.5)
             Text(title)
                 .font(.largeTitle)
             Text(subheading)
                 .font(.headline)
                 .lineLimit(2)
-                .minimumScaleFactor(0.5)
         }
     }
     
