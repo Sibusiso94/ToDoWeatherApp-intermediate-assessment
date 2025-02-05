@@ -26,8 +26,11 @@ struct ItemCardView: View {
             VStack(alignment: .leading) {
                 Text(item.title)
                     .font(.headline)
+                    .lineLimit(1)
                 Text(item.todoDescription)
                     .font(.caption)
+                    .lineLimit(3)
+                    .minimumScaleFactor(0.5)
             }
             
             Spacer()

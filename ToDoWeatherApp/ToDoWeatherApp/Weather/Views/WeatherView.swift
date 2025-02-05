@@ -40,6 +40,8 @@ struct WeatherView: View {
     
     var body: some View {
         NavigationStack {
+            Spacer()
+                .frame(height: 16)
             VStack(alignment: .center, spacing: 50) {
                 createTopSection(header: date,
                                  title: time,
@@ -65,10 +67,14 @@ extension WeatherView {
         VStack(spacing: 8) {
             Text(header)
                 .font(.headline)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
             Text(title)
                 .font(.largeTitle)
             Text(subheading)
                 .font(.headline)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
         }
     }
     
@@ -94,6 +100,8 @@ extension WeatherView {
         VStack {
             Text(heading)
                 .opacity(0.4)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
             Divider()
                 .padding(.horizontal, 50)
             
@@ -104,6 +112,8 @@ extension WeatherView {
                         .opacity(0.4)
                     Text(subtitle1)
                 }
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 Spacer()
                 
                 VStack {
@@ -111,6 +121,8 @@ extension WeatherView {
                         .opacity(0.4)
                     Text(subtitle2)
                 }
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 Spacer()
             }
         }
