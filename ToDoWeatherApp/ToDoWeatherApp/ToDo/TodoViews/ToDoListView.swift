@@ -73,12 +73,12 @@ struct ToDoListView: View {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
                                 ItemCardView(item: item,
                                              itemIds: viewModel.allTasksIds) { newValue in
-//                                    viewModel.toDoTasks[index].isCompleted.toggle()
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
                                              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                                  Button("Delete", systemImage: "trash") {
-                                                     viewModel.delete(taskId: item.id)
+                                                     showDeleteAlert = true
+                                                     viewModel.idToDelete = item.id
                                                  }
                                                  .tint(.red)
                                              }
@@ -98,12 +98,12 @@ struct ToDoListView: View {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
                                 ItemCardView(item: item,
                                              itemIds: viewModel.allTasksIds) { newValue in
-//                                    viewModel.toDoTasks[index].isCompleted.toggle()
                                     viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
                                 }
                                              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                     Button("Delete", systemImage: "trash") {
-                                        viewModel.delete(taskId: item.id)
+                                        showDeleteAlert = true
+                                        viewModel.idToDelete = item.id
                                     }
                                     .tint(.red)
                                 }
@@ -134,6 +134,11 @@ struct ToDoListView: View {
                 .alert("Item Successfully Added", isPresented: $viewModel.didSucceed) {
                     Button("OK", role: .cancel) { }
                 }
+            }.alert(NSLocalizedString("Delete_Alert_Text", comment: ""), isPresented: $showDeleteAlert) {
+                Button(NSLocalizedString("Delete_Button_Text", comment: ""), role: .destructive) {
+                    viewModel.delete(taskId: viewModel.idToDelete)
+                }
+                Button(NSLocalizedString("Cancel_Alert_Text", comment: ""), role: .cancel) { }
             }
         }
     }

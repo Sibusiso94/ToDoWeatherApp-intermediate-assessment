@@ -18,6 +18,7 @@ class ToDoListViewModel: ObservableObject {
     
     @Published var didFail = false
     @Published var didSucceed = false
+    @Published var idToDelete = ""
     
     init() {
         self.fetchItem()

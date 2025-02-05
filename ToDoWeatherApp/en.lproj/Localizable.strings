@@ -21,6 +21,7 @@
 "Delete_Button_Text" = "Delete";
 "Delete_Button_Icon" = "trash";
 "Delete_Alert_Text" = "Are you sure you want to delete this item?";
+"Cancel_Alert_Text" = "Cancel";
 
 "Todo_List_Header_Text" = "To do";
 "Completed_List_Header_text" = "Completed";
