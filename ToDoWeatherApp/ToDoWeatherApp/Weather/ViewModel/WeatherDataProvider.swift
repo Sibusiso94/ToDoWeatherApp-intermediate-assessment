@@ -84,5 +84,6 @@ class WeatherDataProvider: DataProvider {
                 completion()
             }
         }
+        completion()
     }
 }
