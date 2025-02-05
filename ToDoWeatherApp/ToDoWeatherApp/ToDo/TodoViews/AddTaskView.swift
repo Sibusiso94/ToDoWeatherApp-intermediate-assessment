@@ -18,19 +18,19 @@ struct AddTaskView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Add a Task")
+                Text(NSLocalizedString("Add_Task_Title_Text", comment: ""))
                     .font(.title.bold())
                 
-                TextField("Title", text: $titleInput)
+                TextField(NSLocalizedString("TextField_Input_Title_Text", comment: ""), text: $titleInput)
                     .modifier(FieldModifier())
                 
-                TextField("Description", text: $descriptionInput)
+                TextField(NSLocalizedString("TextField_Input_Description_Text", comment: ""), text: $descriptionInput)
                     .modifier(FieldModifier(minHeight: 150))
                 
                 Button {
                     action()
                 } label: {
-                    Text("Add Task")
+                    Text(NSLocalizedString("Add_Task_Button_Text", comment: ""))
                         .padding()
                 }
                 .frame(maxWidth: .infinity)
@@ -45,7 +45,7 @@ struct AddTaskView: View {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Close")
+                        Text(NSLocalizedString("Close_Button_Text", comment: ""))
                     }
 
                 }

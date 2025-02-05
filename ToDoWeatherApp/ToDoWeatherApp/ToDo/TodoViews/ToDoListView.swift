@@ -3,10 +3,13 @@ import SwiftUI
 struct ToDoListView: View {
     @StateObject var viewModel: ToDoListViewModel
     @State var showPopup: Bool
+    @State var showDeleteAlert: Bool
+//    @State var itemId = ""
     
     init() {
         _viewModel = StateObject(wrappedValue: ToDoListViewModel())
         _showPopup = State(initialValue: false)
+        _showDeleteAlert = State(initialValue: false)
     }
     
     var body: some View {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		821E69FF2D4D16DF0095423F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; };
 		821E6A002D4D16DF0095423F /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 821E69FE2D4D16DF0095423F /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		8256E1D42D529B2500D56251 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8256E1D22D529B2500D56251 /* Localizable.strings */; };
 		82ADCDB42D4E1049009A6F93 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 82ADCDB32D4E1049009A6F93 /* RealmSwift */; };
 		82ADCDB52D4E1049009A6F93 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 82ADCDB32D4E1049009A6F93 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		821E69BD2D4D124F0095423F /* ToDoWeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoWeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		821E69CE2D4D12520095423F /* ToDoWeatherAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoWeatherAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		821E69D82D4D12520095423F /* ToDoWeatherAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoWeatherAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8256E1D32D529B2500D56251 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -109,6 +111,7 @@
 		821E69B42D4D124F0095423F = {
 			isa = PBXGroup;
 			children = (
+				8256E1D22D529B2500D56251 /* Localizable.strings */,
 				821E69BF2D4D124F0095423F /* ToDoWeatherApp */,
 				821E69D12D4D12520095423F /* ToDoWeatherAppTests */,
 				821E69DB2D4D12520095423F /* ToDoWeatherAppUITests */,
@@ -261,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8256E1D42D529B2500D56251 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +320,17 @@
 			targetProxy = 821E69D92D4D12520095423F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8256E1D22D529B2500D56251 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8256E1D32D529B2500D56251 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		821E69E02D4D12520095423F /* Debug */ = {
@@ -375,6 +390,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -429,6 +445,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};

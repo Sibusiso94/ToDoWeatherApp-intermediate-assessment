@@ -1,0 +1,29 @@
+/* Weather view */
+"Sunrise_Text" = "Sunrise";
+"Sunset_Text" = "Sunset";
+"Loading_text" = "Loading...";
+"Weather_Error_Text" = "Something went wrong. \nplease try again later";
+"Alert_Button_Text" = "OK";
+
+/* Add task view */
+"Add_Task_Title_Text" = "Add a Task";
+"TextField_Input_Title_Text" = "Title";
+"TextField_Input_Description_Text" = "Description";
+"Add_Task_Button_Text" = "Add Task";
+"Close_Button_Text" = "Close";
+
+"Bullet_List_Icon" = "list.bullet.circle";
+"Filled_Checbox_Icon" = "checkmark.square.fill";
+"Empty_Checbox_Icon" = "square";
+
+/* To do list view */
+"No_Tasks_Title_Text" = "No Tasks Added";
+"Delete_Button_Text" = "Delete";
+"Delete_Button_Icon" = "trash";
+"Delete_Alert_Text" = "Are you sure you want to delete this item?";
+
+"Todo_List_Header_Text" = "To do";
+"Completed_List_Header_text" = "Completed";
+
+"Add_Task_Icon" = "plus.square.dashed";
+"Item_Added_Alert_Text" = "Item Successfully Added";

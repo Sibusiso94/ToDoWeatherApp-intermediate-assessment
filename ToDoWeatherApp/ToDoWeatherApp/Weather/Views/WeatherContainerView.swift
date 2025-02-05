@@ -39,7 +39,7 @@ struct WeatherContainerView: View {
             .overlay {
                 if viewModel.isLoading {
                     VStack {
-                        Text("Loading...")
+                        Text(NSLocalizedString("Loading_text", comment: ""))
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
                     }
@@ -48,8 +48,8 @@ struct WeatherContainerView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
-            .alert("Something went wrong. \nplease try again later", isPresented: $viewModel.didFail) {
-                Button("OK", role: .cancel) { }
+            .alert(NSLocalizedString("Weather_Error_Text", comment: ""), isPresented: $viewModel.didFail) {
+                Button(NSLocalizedString("Alert_Button_Text", comment: ""), role: .cancel) { }
             }
         }
     }

@@ -48,9 +48,9 @@ struct WeatherView: View {
                 createMiddleSection(imageName: condition.rawValue, title: "\(temperature)°C")
                 
                 createBottomSection(heading: conditionDescription,
-                                    title1: "Sunrise",
+                                    title1: NSLocalizedString("Sunrise_Text", comment: ""),
                                     subtitle1: sunrise,
-                                    title2: "Sunrise",
+                                    title2: NSLocalizedString("Sunset_Text", comment: ""),
                                     subtitle2: sunset)
             }
         }
