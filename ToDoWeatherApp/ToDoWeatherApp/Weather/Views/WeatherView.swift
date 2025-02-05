@@ -42,7 +42,7 @@ struct WeatherView: View {
         NavigationStack {
             Spacer()
                 .frame(height: 16)
-            VStack(alignment: .center, spacing: 50) {
+            VStack(alignment: .center, spacing: 35) {
                 createTopSection(header: date,
                                  title: time,
                                  subheading: location)

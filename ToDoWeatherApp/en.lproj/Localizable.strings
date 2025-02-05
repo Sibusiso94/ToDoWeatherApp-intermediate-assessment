@@ -7,9 +7,12 @@
 
 /* Add task view */
 "Add_Task_Title_Text" = "Add a Task";
+"Edit_Task_Title_Text" = "Edit Task";
+"Add_Task_Image_Icon" = "heart.text.clipboard";
 "TextField_Input_Title_Text" = "Title";
 "TextField_Input_Description_Text" = "Description";
 "Add_Task_Button_Text" = "Add Task";
+"Edit_Task_Button_Text" = "Edit Task";
 "Close_Button_Text" = "Close";
 
 "Bullet_List_Icon" = "list.bullet.circle";
@@ -17,6 +20,7 @@
 "Empty_Checbox_Icon" = "square";
 
 /* To do list view */
+"Todo_List_View_Title" = "To do list";
 "No_Tasks_Title_Text" = "No Tasks Added";
 "Delete_Button_Text" = "Delete";
 "Delete_Button_Icon" = "trash";
@@ -28,3 +32,4 @@
 
 "Add_Task_Icon" = "plus.square.dashed";
 "Item_Added_Alert_Text" = "Item Successfully Added";
+"Item_Edited_Alert_Text" = "Item Successfully Edited";

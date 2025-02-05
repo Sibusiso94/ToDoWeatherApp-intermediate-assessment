@@ -73,14 +73,22 @@ struct ToDoListView: View {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
                                 ItemCardView(item: item,
                                              itemIds: viewModel.allTasksIds) { newValue in
-                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+                                    viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
                                 }
-                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                                 Button("Delete", systemImage: "trash") {
-                                                     showDeleteAlert = true
-                                                     viewModel.idToDelete = item.id
+                                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                                 HStack {
+                                                     Button("Delete", systemImage: "trash") {
+                                                         showDeleteAlert = true
+                                                         viewModel.selectedItemId = item.id
+                                                     }
+                                                     .tint(.red)
+                                                     Button("Update", systemImage: "square.and.pencil") {
+                                                         viewModel.selectedItemId = item.id
+                                                         viewModel.isEditing = true
+                                                         showPopup = true
+                                                     }
+                                                     .tint(.yellow)
                                                  }
-                                                 .tint(.red)
                                              }
                                        .enableScrollViewSwipeAction()
                             }
@@ -98,14 +106,22 @@ struct ToDoListView: View {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
                                 ItemCardView(item: item,
                                              itemIds: viewModel.allTasksIds) { newValue in
-                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
+                                    viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
                                 }
-                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                    Button("Delete", systemImage: "trash") {
-                                        showDeleteAlert = true
-                                        viewModel.idToDelete = item.id
-                                    }
-                                    .tint(.red)
+                                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                                 HStack {
+                                                     Button("Delete", systemImage: "trash") {
+                                                         showDeleteAlert = true
+                                                         viewModel.selectedItemId = item.id
+                                                     }
+                                                     .tint(.red)
+                                                     Button("Edit", systemImage: "square.and.pencil") {
+                                                         viewModel.selectedItemId = item.id
+                                                         viewModel.isEditing = true
+                                                         showPopup = true
+                                                     }
+                                                     .tint(.yellow)
+                                                 }
                                 }
                           .enableScrollViewSwipeAction()
                             }
@@ -128,18 +144,30 @@ struct ToDoListView: View {
                 }
             }
             .sheet(isPresented: $showPopup) {
-                AddTaskView(titleInput: $viewModel.newItem.title, descriptionInput: $viewModel.newItem.todoDescription) {
-                    viewModel.addToDoItem()
+                AddTaskView(titleInput: $viewModel.newItem.todoTitle,
+                            descriptionInput: $viewModel.newItem.todoDescription,
+                            isEditing: viewModel.isEditing) {
+                    if viewModel.isEditing {
+                        viewModel.editTask(taskId: viewModel.selectedItemId,
+                                           title: viewModel.newItem.todoTitle,
+                                           todoDescription: viewModel.newItem.todoDescription)
+                    } else {
+                        viewModel.addToDoItem()
+                    }
                 }
-                .alert("Item Successfully Added", isPresented: $viewModel.didSucceed) {
+                            .alert(viewModel.isEditing ? NSLocalizedString("Item_Edited_Alert_Text", comment: "") : NSLocalizedString("Item_Added_Alert_Text", comment: ""), isPresented: $viewModel.didSucceed) {
                     Button("OK", role: .cancel) { }
+                }
+                .onDisappear() {
+                    viewModel.clearAddViewText()
                 }
             }.alert(NSLocalizedString("Delete_Alert_Text", comment: ""), isPresented: $showDeleteAlert) {
                 Button(NSLocalizedString("Delete_Button_Text", comment: ""), role: .destructive) {
-                    viewModel.delete(taskId: viewModel.idToDelete)
+                    viewModel.delete(taskId: viewModel.selectedItemId)
                 }
                 Button(NSLocalizedString("Cancel_Alert_Text", comment: ""), role: .cancel) { }
             }
         }
+        .navigationTitle(NSLocalizedString("Todo_List_View_Title", comment: ""))
     }
 }

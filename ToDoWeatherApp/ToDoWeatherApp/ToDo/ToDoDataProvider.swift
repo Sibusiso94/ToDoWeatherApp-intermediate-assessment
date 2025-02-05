@@ -20,15 +20,33 @@ class ToDoDataProvider: DataProvider {
     }
     
     func update(taskId: String, isTasksComplete: Bool, completion: @escaping () -> Void) throws {
-        let realm = try! Realm()
-        
-        if let itemToUpdate = realm.object(ofType: ToDoItem.self, forPrimaryKey: taskId) {
-            try! realm.write {
+        if let itemToUpdate = repository.realm.object(ofType: ToDoItem.self, forPrimaryKey: taskId) {
+            try! repository.realm.write {
                 itemToUpdate.isCompleted = isTasksComplete
                 completion()
             }
             completion()
         }
+    }
+    
+    func update(taskId: String,
+                title: String?,
+                todoDescription: String?,
+                completion: @escaping () -> Void) throws {
+        if let itemToUpdate = repository.realm.object(ofType: ToDoItem.self, forPrimaryKey: taskId) {
+            try! repository.realm.write {
+                if let title = title {
+                    itemToUpdate.todoTitle = title
+                }
+                
+                if let todoDescription {
+                    itemToUpdate.todoDescription = todoDescription
+                }
+                
+                completion()
+            }
+        }
+        completion()
     }
     
     func delete(_ id: String) throws {

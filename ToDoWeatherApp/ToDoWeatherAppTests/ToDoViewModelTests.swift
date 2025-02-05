@@ -21,11 +21,11 @@ final class ToDoViewModelTests: XCTestCase {
     }
 
     func testGivenAddingDataThenAddsItemsTotoDoTasksSuccessfully() throws {
-        viewModel.newItem = ToDoItem(title: "Make food", todoDescription: "Prep pasta and mince and make lasagna")
+        viewModel.newItem = ToDoItem(todoTitle: "Make food", todoDescription: "Prep pasta and mince and make lasagna")
         
         self.viewModel.addToDoItem()
         
-        XCTAssertEqual(viewModel.toDoTasks[0].title, "Make food")
+        XCTAssertEqual(viewModel.toDoTasks[0].todoTitle, "Make food")
         XCTAssertEqual(viewModel.toDoTasks[0].todoDescription, "Prep pasta and mince and make lasagna")
         XCTAssertEqual(viewModel.allTasksIds[0], viewModel.toDoTasks[0].id)
     }
@@ -35,7 +35,7 @@ final class ToDoViewModelTests: XCTestCase {
         setUpMockData()
         
 //        DispatchQueue.global(qos: .background).async {
-            self.viewModel.updateTask(taskId: "2", isTaskComplete: true)
+            self.viewModel.completeTask(taskId: "2", isTaskComplete: true)
 //            expectation.fulfill()
 //        }
         

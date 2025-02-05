@@ -24,7 +24,7 @@ struct ItemCardView: View {
                 .foregroundStyle(.blue.opacity(0.5))
             
             VStack(alignment: .leading) {
-                Text(item.title)
+                Text(item.todoTitle)
                     .font(.headline)
                     .lineLimit(1)
                 Text(item.todoDescription)

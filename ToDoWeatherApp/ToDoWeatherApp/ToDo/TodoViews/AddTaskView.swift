@@ -4,23 +4,22 @@ struct AddTaskView: View {
     @Environment(\.dismiss) var dismiss
     @Binding var titleInput: String
     @Binding var descriptionInput: String
-//    @State var shouldShowAlert: Bool = false
+    var isEditing: Bool
     var action: () -> ()
     
     init(titleInput: Binding<String>,
          descriptionInput: Binding<String>,
+         isEditing: Bool = false,
          action: @escaping () -> ()) {
         self._titleInput = titleInput
         self._descriptionInput = descriptionInput
+        self.isEditing = isEditing
         self.action = action
     }
     
     var body: some View {
         NavigationStack {
             VStack {
-                Text(NSLocalizedString("Add_Task_Title_Text", comment: ""))
-                    .font(.title.bold())
-                
                 TextField(NSLocalizedString("TextField_Input_Title_Text", comment: ""), text: $titleInput)
                     .modifier(FieldModifier())
                 
@@ -30,7 +29,7 @@ struct AddTaskView: View {
                 Button {
                     action()
                 } label: {
-                    Text(NSLocalizedString("Add_Task_Button_Text", comment: ""))
+                    Text(isEditing ? NSLocalizedString("Edit_Task_Button_Text", comment: "") : NSLocalizedString("Add_Task_Button_Text", comment: ""))
                         .padding()
                 }
                 .frame(maxWidth: .infinity)
@@ -40,6 +39,7 @@ struct AddTaskView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding()
             }
+            .navigationTitle(isEditing ? NSLocalizedString("Edit_Task_Title_Text", comment: "") : NSLocalizedString("Add_Task_Title_Text", comment: ""))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {

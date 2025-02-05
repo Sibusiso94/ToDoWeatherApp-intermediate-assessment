@@ -15,10 +15,12 @@ class ToDoListViewModel: ObservableObject {
     @Published var toDoTasks: [ToDoItem] = []
     @Published var completedTasks: [ToDoItem] = []
     @Published var newItem = ToDoItem()
+    @Published var editedItem: ToDoItem?
     
     @Published var didFail = false
     @Published var didSucceed = false
-    @Published var idToDelete = ""
+    @Published var selectedItemId = ""
+    @Published var isEditing = false
     
     init() {
         self.fetchItem()
@@ -32,7 +34,7 @@ class ToDoListViewModel: ObservableObject {
     func addToDoItem() {
         let newId = generateNewId()
         var newToDoItem = ToDoItem(id: newId,
-                                   title: newItem.title,
+                                   todoTitle: newItem.todoTitle,
                                    todoDescription: newItem.todoDescription)
         persistItem(newToDoItem)
         toDoTasks.append(newToDoItem)
@@ -49,14 +51,35 @@ class ToDoListViewModel: ObservableObject {
         }
     }
     
-    func updateTask(taskId: String, isTaskComplete: Bool) {
+    func completeTask(taskId: String, isTaskComplete: Bool) {
         do {
             try dataProvider.update(taskId: taskId, isTasksComplete: isTaskComplete) {
                 self.fetchItem()
                 self.filterTasks()
             }
         } catch (let error) {
-            os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
+            os_log("Failed to complete object: %@", type: .debug, error.localizedDescription)
+            didFail = true
+        }
+    }
+    
+    func editTask(taskId: String,
+                  title: String? = nil,
+                  todoDescription: String? = nil) {
+        let id = taskId
+        let editedTitle = title
+        let editedToDoDescription = todoDescription
+        
+        do {
+            try dataProvider.update(taskId: id,
+                                    title: editedTitle == "" ? nil : editedTitle,
+                                    todoDescription: editedToDoDescription == "" ? nil : editedToDoDescription) {
+                self.fetchItem()
+                self.filterTasks()
+                self.didSucceed = true
+            }
+        } catch {
+            os_log("Failed to edit object")
             didFail = true
         }
     }
@@ -67,7 +90,7 @@ class ToDoListViewModel: ObservableObject {
             fetchItem()
             filterTasks()
         } catch let error {
-            os_log("Failed to create object: %@", type: .debug, error.localizedDescription)
+            os_log("Failed to delete object: %@", type: .debug, error.localizedDescription)
             didFail = true
         }
     }
@@ -84,5 +107,10 @@ class ToDoListViewModel: ObservableObject {
     
     func generateNewId() -> String {
         UUID().uuidString
+    }
+    
+    func clearAddViewText() {
+        newItem = ToDoItem()
+        isEditing = false
     }
 }
