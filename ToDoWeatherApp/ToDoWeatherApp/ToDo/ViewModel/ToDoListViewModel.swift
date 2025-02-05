@@ -7,15 +7,32 @@ enum ToDoListError: Error {
     case failedToLoadData
 }
 
-class ToDoListViewModel: ObservableObject {
-    let dataProvider = ToDoDataProvider()
+protocol TodoListTaskProvier {
+    var allTasks: [ToDoItem] { get set }
+    var allTasksIds: [String] { get set }
+    var toDoTasks: [ToDoItem] { get set }
+    var completedTasks: [ToDoItem] { get set }
+    var newItem: ToDoItem { get set }
+}
+
+protocol ToDoListDataProvider {
+    func fetchItem()
+    func persistItem(_ newToDoItem: ToDoItem)
+    func completeTask(taskId: String, isTaskComplete: Bool)
+    func editTask(taskId: String,
+                  title: String?,
+                  todoDescription: String?)
+    func delete(taskId: String)
+}
+
+class ToDoListViewModel: ObservableObject, TodoListTaskProvier, ToDoListDataProvider {
+    var dataProvider = ToDoDataProvider()
     
     @Published var allTasks: [ToDoItem] = []
     @Published var allTasksIds: [String] = []
     @Published var toDoTasks: [ToDoItem] = []
     @Published var completedTasks: [ToDoItem] = []
     @Published var newItem = ToDoItem()
-    @Published var editedItem: ToDoItem?
     
     @Published var didFail = false
     @Published var didSucceed = false

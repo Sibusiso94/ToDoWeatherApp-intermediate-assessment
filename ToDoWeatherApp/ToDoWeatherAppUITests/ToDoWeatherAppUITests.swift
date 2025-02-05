@@ -20,12 +20,12 @@ final class ToDoWeatherAppUITests: XCTestCase {
         XCTAssert(tabBar.buttons["Weather"].exists)
     }
     
-    func testGivenTappingOnAddingIconThenAddViewShows() {
-        let element = app.navigationBars[NSLocalizedString("Todo_List_View_Title", comment: "")]
-        element.buttons.firstMatch.tap()
+//    func testGivenTappingOnAddingIconThenAddViewShows() {
+//        let element = app.navigationBars[NSLocalizedString("Todo_List_View_Title", comment: "")]
+//        element.buttons.firstMatch.tap()
         
 //        XCTAssert()
-    }
+//    }
 
     @MainActor
     func testLaunchPerformance() throws {

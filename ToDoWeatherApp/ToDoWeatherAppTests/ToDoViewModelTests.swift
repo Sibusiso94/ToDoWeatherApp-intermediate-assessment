@@ -3,20 +3,19 @@ import RealmSwift
 @testable import ToDoWeatherApp
 
 final class ToDoViewModelTests: XCTestCase {
-    var viewModel: ToDoListViewModel! = nil
-    var repository: RealmRepository! = nil
-    let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
+    let viewModel = ToDoListViewModel()
+    var dataProvider: ToDoDataProvider! = nil
 
     override func setUpWithError() throws {
         super.setUp()
-        repository = RealmRepository()
-        repository.realm = try! Realm(configuration: config)
-        viewModel = ToDoListViewModel()
-        
+        let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
+        dataProvider = ToDoDataProvider()
+        dataProvider.repository.realm = try! Realm(configuration: config)
+        viewModel.dataProvider = dataProvider
     }
 
     override func tearDownWithError() throws {
-        repository.clearRealm()
+        viewModel.dataProvider.repository.clearRealm()
         super.tearDown()
     }
 
@@ -31,15 +30,10 @@ final class ToDoViewModelTests: XCTestCase {
     }
     
     func testGivenTasksIsCompletedThenToDoTaskIsEmpty() throws {
-//        let expectation = expectation(description: "Complete writing to realm")
+        let expectation = expectation(description: "Complete writing to realm")
         setUpMockData()
         
-//        DispatchQueue.global(qos: .background).async {
-            self.viewModel.completeTask(taskId: "2", isTaskComplete: true)
-//            expectation.fulfill()
-//        }
-        
-//        wait(for: [expectation], timeout: 5.0)
+        self.viewModel.completeTask(taskId: "2", isTaskComplete: true)
         
         XCTAssertEqual(viewModel.toDoTasks.count, 0)
         XCTAssertEqual(viewModel.completedTasks.count, 3)
@@ -63,8 +57,43 @@ final class ToDoViewModelTests: XCTestCase {
     }
     
     func setUpMockData() {
-        viewModel.allTasks = [ToDoItem(id: "1", title: "H", todoDescription: "W", isCompleted: true),
-                              ToDoItem(id: "2", title: "H", todoDescription: "W", isCompleted: false),
-                              ToDoItem(id: "3", title: "H", todoDescription: "W", isCompleted: true)]
+        viewModel.allTasks = [ToDoItem(id: "1", todoTitle: "H", todoDescription: "W", isCompleted: true),
+                              ToDoItem(id: "2", todoTitle: "H", todoDescription: "W", isCompleted: false),
+                              ToDoItem(id: "3", todoTitle: "H", todoDescription: "W", isCompleted: true)]
     }
+}
+
+class MockTodoDataProvider: DataProvider {
+    typealias T = ToDoItem
+    
+    var repository = RealmRepository()
+    let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
+    
+    init() {
+        self.repository.realm = try! Realm(configuration: config)
+    }
+    
+    func readAll() -> [T] {
+        repository.readAll(T.self)
+    }
+    
+    func delete(_ id: String) throws {
+        do {
+            try repository.delete(id, ofType: T.self)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func create(_ object: T) {
+        do {
+            try repository.create(object)
+        } catch {
+            print(error)
+        }
+    }
+}
+
+class MockToDoItem {
+    static let item = ToDoItem(todoTitle: "Make food", todoDescription: "Prep pasta and mince and make lasagna")
 }
