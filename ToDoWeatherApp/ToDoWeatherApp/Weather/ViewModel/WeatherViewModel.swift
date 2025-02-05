@@ -3,7 +3,7 @@ import CoreLocation
 import CoreLocationUI
 
 enum ConditionsStrings: String {
-    case sunny = "sunny"
+    case sunny = "Sunny"
     case overcast = "cloud"
     case rainy = "rain"
     case snow = "snow"
@@ -109,7 +109,8 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate, W
     
     private func persistData(data: WeatherModel?) {
         guard let data = data else { return }
-        dataProvider.persistWeatherModel(name: data.location.name,
+        dataProvider.persistWeatherModel(weatherData?.id,
+                                         name: data.location.name,
                                          condition: data.current.condition.text,
                                          temperature: data.current.tempC,
                                          feelsLike: data.current.feelslikeC,

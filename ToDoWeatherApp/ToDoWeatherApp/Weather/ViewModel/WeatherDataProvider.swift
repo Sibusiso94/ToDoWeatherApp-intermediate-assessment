@@ -23,11 +23,12 @@ class WeatherDataProvider: DataProvider {
         }
     }
     
-    func persistWeatherModel(name: String,
-                                     condition: String,
-                                     temperature: Double,
-                                     feelsLike: Double,
-                                     sunriseTime: String,
+    func persistWeatherModel(_ idToDelete: String?,
+                             name: String,
+                             condition: String,
+                             temperature: Double,
+                             feelsLike: Double,
+                             sunriseTime: String,
                              sunsetTime: String,
                              completion: @escaping (WeatherDomainModel?, Error?) -> Void) {
         let newId = UUID().uuidString
@@ -38,11 +39,14 @@ class WeatherDataProvider: DataProvider {
                                                 feelsLikeTemperature: feelsLike,
                                                 sunriseTime: sunriseTime,
                                                 sunsetTime: sunsetTime)
-        do {
-            try create(newWeatherData)
-            completion(newWeatherData, nil)
-        } catch {
-            completion(nil, error)
+        refreshCache(idToDelete) {
+            do {
+                try self.create(newWeatherData)
+                completion(newWeatherData, nil)
+            } catch {
+                print("Faiiled to delete \(error)")
+                completion(nil, error)
+            }
         }
     }
     
@@ -51,7 +55,6 @@ class WeatherDataProvider: DataProvider {
 //    }
     
     internal func create(_ object: WeatherDomainModel) throws {
-        clearRealm()
         do {
             try repository.create(object)
         } catch {
@@ -71,7 +74,15 @@ class WeatherDataProvider: DataProvider {
         }
     }
     
-    func clearRealm() {
-        repository.clearRealm()
+    func refreshCache(_ id: String?, completion: @escaping () -> ()) {
+        if let id {
+            do {
+                try delete(id)
+                completion()
+            } catch {
+                print(error)
+                completion()
+            }
+        }
     }
 }
