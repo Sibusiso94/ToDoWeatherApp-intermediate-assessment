@@ -26,7 +26,7 @@ protocol ToDoListDataProvider {
 }
 
 class ToDoListViewModel: ObservableObject, TodoListTaskProvier, ToDoListDataProvider {
-    var dataProvider = ToDoDataProvider()
+    var dataProvider: ToDoDataProvider
     
     @Published var allTasks: [ToDoItem] = []
     @Published var allTasksIds: [String] = []
@@ -39,7 +39,8 @@ class ToDoListViewModel: ObservableObject, TodoListTaskProvier, ToDoListDataProv
     @Published var selectedItemId = ""
     @Published var isEditing = false
     
-    init() {
+    init(dataProvider: ToDoDataProvider = ToDoDataProvider()) {
+        self.dataProvider = dataProvider
         self.fetchItem()
         self.filterTasks()
     }

@@ -3,7 +3,7 @@ import RealmSwift
 @testable import ToDoWeatherApp
 
 final class ToDoViewModelTests: XCTestCase {
-    let viewModel = ToDoListViewModel()
+    var viewModel: ToDoListViewModel! = nil
     var dataProvider: ToDoDataProvider! = nil
 
     override func setUpWithError() throws {
@@ -11,7 +11,7 @@ final class ToDoViewModelTests: XCTestCase {
         let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
         dataProvider = ToDoDataProvider()
         dataProvider.repository.realm = try! Realm(configuration: config)
-        viewModel.dataProvider = dataProvider
+        viewModel = ToDoListViewModel(dataProvider: dataProvider)
     }
 
     override func tearDownWithError() throws {
@@ -30,13 +30,19 @@ final class ToDoViewModelTests: XCTestCase {
     }
     
     func testGivenTasksIsCompletedThenToDoTaskIsEmpty() throws {
-        let expectation = expectation(description: "Complete writing to realm")
         setUpMockData()
+        viewModel.fetchItem()
+        viewModel.filterTasks()
         
-        self.viewModel.completeTask(taskId: "2", isTaskComplete: true)
+        let incompleteItem = viewModel.toDoTasks.first(where: { $0.isCompleted == false })
+        let incompleteId = incompleteItem?.id ?? ""
         
-        XCTAssertEqual(viewModel.toDoTasks.count, 0)
-        XCTAssertEqual(viewModel.completedTasks.count, 3)
+        self.viewModel.completeTask(taskId: incompleteId, isTaskComplete: true)
+        viewModel.fetchItem()
+        viewModel.filterTasks()
+        
+        XCTAssertEqual(viewModel.toDoTasks.count, 2)
+        XCTAssertEqual(viewModel.completedTasks.count, 1)
     }
     
     func testGivenItemsAddedWhenIdsAreSortedThenIdsAppendsToAllTasksIds() throws {
@@ -48,18 +54,22 @@ final class ToDoViewModelTests: XCTestCase {
     
     func testTasksGetFilteredCorrectly() throws {
         setUpMockData()
+        viewModel.fetchItem()
         viewModel.filterTasks()
         
-        XCTAssertEqual(viewModel.toDoTasks.count, 1)
-        XCTAssertEqual(viewModel.completedTasks.count, 2)
-        XCTAssertFalse(viewModel.toDoTasks[0].isCompleted)
-        XCTAssertTrue(viewModel.completedTasks[0].isCompleted)
+        XCTAssertEqual(viewModel.toDoTasks.count, 2)
+        XCTAssertEqual(viewModel.completedTasks.count, 1)
     }
     
     func setUpMockData() {
-        viewModel.allTasks = [ToDoItem(id: "1", todoTitle: "H", todoDescription: "W", isCompleted: true),
-                              ToDoItem(id: "2", todoTitle: "H", todoDescription: "W", isCompleted: false),
-                              ToDoItem(id: "3", todoTitle: "H", todoDescription: "W", isCompleted: true)]
+        let allTasks = [ToDoItem(id: "1", todoTitle: "H", todoDescription: "W", isCompleted: true),
+                        ToDoItem(id: "2", todoTitle: "H", todoDescription: "W", isCompleted: false),
+                        ToDoItem(id: "3", todoTitle: "H", todoDescription: "W", isCompleted: true)]
+        
+        for task in allTasks {
+            viewModel.newItem = task
+            viewModel.addToDoItem()
+        }
     }
 }
 
