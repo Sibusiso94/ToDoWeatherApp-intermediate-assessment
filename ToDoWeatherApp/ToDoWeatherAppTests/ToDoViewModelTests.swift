@@ -29,9 +29,8 @@ final class ToDoViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.allTasksIds[0], viewModel.toDoTasks[0].id)
     }
     
-    func testGivenTasksIsCompletedThenToDoTaskIsEmpty() throws {
+    func testGivenTasksAreFetchedAndFilteredWhenIsCompletedThenToDoTaskIsEmpty() throws {
         setUpMockData()
-        viewModel.fetchItem()
         viewModel.filterTasks()
         
         let incompleteItem = viewModel.toDoTasks.first(where: { $0.isCompleted == false })
@@ -47,7 +46,6 @@ final class ToDoViewModelTests: XCTestCase {
     
     func testGivenItemsAddedWhenIdsAreSortedThenIdsAppendsToAllTasksIds() throws {
         setUpMockData()
-        viewModel.getItemIds()
         let ids = viewModel.toDoTasks.map({ $0.id })
         
         XCTAssertEqual(viewModel.allTasksIds, ids)
@@ -65,6 +63,10 @@ final class ToDoViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.completedTasks.count, 1)
     }
     
+    func testGivenTasksAddedWhenTaskEditedThenTaskIsUpdated() throws {
+        
+    }
+    
     func setUpMockData() {
         let allTasks = [ToDoItem(id: "1", todoTitle: "Make food", todoDescription: "Prep pasta and mince and make lasagna", isCompleted: true),
                         ToDoItem(id: "2", todoTitle: "Clean", todoDescription: "Clean kicthen", isCompleted: false),
@@ -76,6 +78,7 @@ final class ToDoViewModelTests: XCTestCase {
         }
         
         viewModel.fetchItem()
+        viewModel.getItemIds()
     }
 }
 
