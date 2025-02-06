@@ -71,26 +71,24 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(item: item,
-                                             itemIds: viewModel.allTasksIds) { newValue in
-                                    viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
-                                }
-                                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                                 HStack {
-                                                     Button("Delete", systemImage: "trash") {
+                                withAnimation {
+                                    ItemCardView(item: item,
+                                                 itemIds: viewModel.allTasksIds) { newValue in
+                                        viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
+                                    }
+                                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                                     SwipeActionButton {
                                                          showDeleteAlert = true
                                                          viewModel.selectedItemId = item.id
-                                                     }
-                                                     .tint(.red)
-                                                     Button("Update", systemImage: "square.and.pencil") {
+                                                     } editAction: {
                                                          viewModel.selectedItemId = item.id
                                                          viewModel.isEditing = true
                                                          showPopup = true
                                                      }
-                                                     .tint(.yellow)
+
                                                  }
-                                             }
-                                       .enableScrollViewSwipeAction()
+                                                 .enableScrollViewSwipeAction()
+                                }
                             }
                             .padding()
                         }
@@ -104,26 +102,24 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
-                                ItemCardView(item: item,
-                                             itemIds: viewModel.allTasksIds) { newValue in
-                                    viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
-                                }
-                                             .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                                 HStack {
-                                                     Button("Delete", systemImage: "trash") {
+                                withAnimation {
+                                    ItemCardView(item: item,
+                                                 itemIds: viewModel.allTasksIds) { newValue in
+                                        viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
+                                    }
+                                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                                     SwipeActionButton {
                                                          showDeleteAlert = true
                                                          viewModel.selectedItemId = item.id
-                                                     }
-                                                     .tint(.red)
-                                                     Button("Edit", systemImage: "square.and.pencil") {
+                                                     } editAction: {
                                                          viewModel.selectedItemId = item.id
                                                          viewModel.isEditing = true
                                                          showPopup = true
                                                      }
-                                                     .tint(.yellow)
+
                                                  }
+                                                 .enableScrollViewSwipeAction()
                                 }
-                          .enableScrollViewSwipeAction()
                             }
                             .padding()
                         }

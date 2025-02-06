@@ -64,8 +64,22 @@ final class ToDoViewModelTests: XCTestCase {
     }
     
     func testGivenTasksAddedWhenTaskEditedThenTaskIsUpdated() throws {
+        setUpMockData()
+        let itemToUpdate = viewModel.allTasks.first(where: { $0.todoTitle == "Eat" })!
         
+        viewModel.editTask(taskId: itemToUpdate.id, todoDescription: "Order Pizza. I'm too lazy to cook")
+        let updatedItem = viewModel.allTasks.first(where: { $0.todoTitle == "Eat" })!
+        XCTAssertEqual(updatedItem.todoDescription, "Order Pizza. I'm too lazy to cook")
     }
+    
+//    func testGivenTasksAddedWhenTaskIsDeletedThenItemNoLongerExists() throws {
+//        setUpMockData()
+//        let itemTDelete = viewModel.allTasks.first(where: { $0.todoTitle == "Clean" })!
+//        
+//        viewModel.delete(taskId: itemTDelete.id)
+//        XCTAssertEqual(viewModel.allTasks.count, 2)
+//        
+//    }
     
     func setUpMockData() {
         let allTasks = [ToDoItem(id: "1", todoTitle: "Make food", todoDescription: "Prep pasta and mince and make lasagna", isCompleted: true),
