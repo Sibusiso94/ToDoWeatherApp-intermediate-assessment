@@ -48,28 +48,34 @@ final class ToDoViewModelTests: XCTestCase {
     func testGivenItemsAddedWhenIdsAreSortedThenIdsAppendsToAllTasksIds() throws {
         setUpMockData()
         viewModel.getItemIds()
+        let ids = viewModel.toDoTasks.map({ $0.id })
         
-        XCTAssertEqual(viewModel.allTasksIds, ["1","2","3"])
+        XCTAssertEqual(viewModel.allTasksIds, ids)
     }
     
     func testTasksGetFilteredCorrectly() throws {
         setUpMockData()
-        viewModel.fetchItem()
         viewModel.filterTasks()
+        
+        let itemToUpdate = viewModel.allTasks.first(where: { $0.todoTitle == "Eat" })!
+        
+        viewModel.completeTask(taskId: itemToUpdate.id, isTaskComplete: true)
         
         XCTAssertEqual(viewModel.toDoTasks.count, 2)
         XCTAssertEqual(viewModel.completedTasks.count, 1)
     }
     
     func setUpMockData() {
-        let allTasks = [ToDoItem(id: "1", todoTitle: "H", todoDescription: "W", isCompleted: true),
-                        ToDoItem(id: "2", todoTitle: "H", todoDescription: "W", isCompleted: false),
-                        ToDoItem(id: "3", todoTitle: "H", todoDescription: "W", isCompleted: true)]
+        let allTasks = [ToDoItem(id: "1", todoTitle: "Make food", todoDescription: "Prep pasta and mince and make lasagna", isCompleted: true),
+                        ToDoItem(id: "2", todoTitle: "Clean", todoDescription: "Clean kicthen", isCompleted: false),
+                        ToDoItem(id: "3", todoTitle: "Eat", todoDescription: "Sit donw and eat", isCompleted: true)]
         
         for task in allTasks {
             viewModel.newItem = task
             viewModel.addToDoItem()
         }
+        
+        viewModel.fetchItem()
     }
 }
 
