@@ -4,7 +4,6 @@ struct ToDoListView: View {
     @StateObject var viewModel: ToDoListViewModel
     @State var showPopup: Bool
     @State var showDeleteAlert: Bool
-//    @State var itemId = ""
     
     init() {
         _viewModel = StateObject(wrappedValue: ToDoListViewModel())
@@ -15,51 +14,6 @@ struct ToDoListView: View {
     
     var body: some View {
         NavigationStack {
-//            VStack {
-//                List {
-//                    if viewModel.toDoTasks.isEmpty {
-//                        Spacer()
-//                            .listRowSeparator(.hidden)
-//                        Text("No Tasks Added")
-//                            .font(.largeTitle)
-//                            .opacity(0.5)
-//                            .listRowSeparator(.hidden)
-//                        Spacer()
-//                            .listRowSeparator(.hidden)
-//                    } else {
-//                        Section(header: Text("To do")) {
-//                            ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
-//                                ItemCardView(item: item,
-//                                             itemIds: viewModel.allTasksIds) { newValue in
-//                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
-//                                }
-//                                
-//                            }
-//                            .listRowSeparator(.hidden)
-//                        }
-//                    }
-//                    
-//                    if !viewModel.completedTasks.isEmpty {
-//                        Section(header: Text("Completed")) {
-//                            ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
-//                                ItemCardView(item: item,
-//                                             itemIds: viewModel.allTasksIds) { newValue in
-//                                    viewModel.updateTask(taskId: item.id, isTaskComplete: newValue)
-//                                }
-//                                             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-//                                                 Button("Delete", systemImage: "trash") {
-//                                                     viewModel.delete(taskId: item.id)
-//                                                 }
-//                                                 .tint(.red)
-//                                             }
-//                                             .enableScrollViewSwipeAction()
-//                            }
-//                            .listRowSeparator(.hidden)
-//                        }
-//                    }
-//                }
-//                .listStyle(PlainListStyle())
-//            }
             ScrollView {
                 if viewModel.toDoTasks.isEmpty {
                     Spacer()
