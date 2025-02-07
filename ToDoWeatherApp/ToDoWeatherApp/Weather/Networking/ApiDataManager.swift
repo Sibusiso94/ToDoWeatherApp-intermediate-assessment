@@ -18,7 +18,7 @@ class ApiDataManager: ApiDataProvider {
         let url = networkingManager.createURL(
             baseURL: baseURL,
             parameters: [
-                ("key", "7ade4844a9b349eabb5165409250102"),
+                ("key", Secrets.apikey),
                 ("q", location),
                 ("days", "1"),
                 ("aqi", "no"),

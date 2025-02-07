@@ -4,6 +4,7 @@ struct ToDoListView: View {
     @StateObject var viewModel: ToDoListViewModel
     @State var showPopup: Bool
     @State var showDeleteAlert: Bool
+    @State var offset: CGSize = .zero
     
     init() {
         _viewModel = StateObject(wrappedValue: ToDoListViewModel())
@@ -25,7 +26,7 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.toDoTasks.enumerated()), id: \.offset) { index, item in
-                                withAnimation {
+                                withAnimation(.spring()) {
                                     ItemCardView(item: item,
                                                  itemIds: viewModel.allTasksIds) { newValue in
                                         viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
@@ -56,7 +57,7 @@ struct ToDoListView: View {
                     Section {
                         LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                             ForEach(Array(viewModel.completedTasks.enumerated()), id: \.offset) { index, item in
-                                withAnimation {
+                                withAnimation(.spring()) {
                                     ItemCardView(item: item,
                                                  itemIds: viewModel.allTasksIds) { newValue in
                                         viewModel.completeTask(taskId: item.id, isTaskComplete: newValue)
