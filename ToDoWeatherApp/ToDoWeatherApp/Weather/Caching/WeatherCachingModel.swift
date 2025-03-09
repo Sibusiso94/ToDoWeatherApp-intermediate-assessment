@@ -1,7 +1,7 @@
 import Foundation
 import RealmSwift
 
-class WeatherDomainModel: Object, Identifiable {
+class WeatherCachingModel: Object, Identifiable {
     @Persisted(primaryKey: true) var id: String
     @Persisted var locationName: String
     @Persisted var condition: String

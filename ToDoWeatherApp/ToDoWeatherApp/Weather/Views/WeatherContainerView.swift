@@ -11,30 +11,20 @@ struct WeatherContainerView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 50) {
-                if let data = viewModel.weatherData {
                     VStack {
-                        WeatherView(date: viewModel.date,
-                                    time: viewModel.time,
-                                    location: data.locationName,
-                                    condition: viewModel.condition,
-                                    temperature: "\(data.temperature)",
-                                    conditionDescription: data.condition,
-                                    sunrise: data.sunriseTime,
-                                    sunset: data.sunsetTime)
+                        if let data = viewModel.data {
+                            WeatherView(data: data)
+                        }
                     }
-                }
                 
                 LocationButton(.currentLocation) {
-                    viewModel.fetchWeatherData()
+                    viewModel.fetch()
                 }
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .labelStyle(.titleAndIcon)
                 .symbolVariant(.fill)
                 .tint(.blue.opacity(0.5))
-            }
-            .onAppear() {
-                viewModel.setUpDates()
             }
             .overlay {
                 if viewModel.isLoading {
@@ -53,8 +43,4 @@ struct WeatherContainerView: View {
             }
         }
     }
-}
-
-#Preview {
-    WeatherContainerView()
 }

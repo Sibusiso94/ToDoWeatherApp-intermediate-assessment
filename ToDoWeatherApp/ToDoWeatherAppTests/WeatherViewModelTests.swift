@@ -35,7 +35,7 @@ class WeatherViewModelTests: XCTestCase {
 }
 
 class MockWeatherViewModel: WeatherViewModelManager {
-    var weatherData: WeatherDomainModel?
+    var weatherData: WeatherCachingModel?
     var apiDataManager: MockApiDataProvider
     
     var isLoading: Bool = false
@@ -80,7 +80,7 @@ class MockWeatherViewModel: WeatherViewModelManager {
 }
 
 class MockDataProvider: DataProvider {
-    typealias T = WeatherDomainModel
+    typealias T = WeatherCachingModel
     
     var repository = RealmRepository()
     let config = Realm.Configuration(inMemoryIdentifier: "TestRealm")
@@ -130,7 +130,7 @@ class MockApiDataProvider: ApiDataProvider {
 }
 
 class MockWeatherData {
-    static let domainDataModel = WeatherDomainModel(locationName: "Johannesburg", condition: "Sunny", temperature: 28.7, feelsLikeTemperature: 31.2, sunriseTime: "05:43 am", sunsetTime: "06:59 pm")
+    static let domainDataModel = WeatherCachingModel(locationName: "Johannesburg", condition: "Sunny", temperature: 28.7, feelsLikeTemperature: 31.2, sunriseTime: "05:43 am", sunsetTime: "06:59 pm")
     
     static let dataModel = WeatherModel(location: Location(name: "Johannesburg"),
                                         current: Current(tempC: 28.7, tempF: 30, condition: Condition(text: "Sunny"), humidity: 20, cloud: 9, feelslikeC: 31.2),

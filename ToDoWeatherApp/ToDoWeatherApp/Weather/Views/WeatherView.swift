@@ -1,41 +1,10 @@
 import SwiftUI
 
-enum ConditionIcon: String {
-    case sunny = "sun.max"
-    case cloudy, overcast
-    case cloud
-    case rainy = "cloud.rain"
-    case snow = "snow"
-}
-
 struct WeatherView: View {
-    var date: String
-    var time: String
-    var location: String
-    
-    var condition: ConditionIcon
-    var temperature: String
-    
-    var conditionDescription: String
-    var sunrise: String
-    var sunset: String
-    
-    init(date: String,
-         time: String,
-         location: String,
-         condition: ConditionIcon,
-         temperature: String,
-         conditionDescription: String,
-         sunrise: String,
-         sunset: String) {
-        self.date = date
-        self.time = time
-        self.location = location
-        self.condition = condition
-        self.temperature = temperature
-        self.conditionDescription = conditionDescription
-        self.sunrise = sunrise
-        self.sunset = sunset
+    var data: WeatherDomainModel
+
+    init(data: WeatherDomainModel) {
+        self.data = data
     }
     
     var body: some View {
@@ -43,17 +12,17 @@ struct WeatherView: View {
             Spacer()
                 .frame(height: 16)
             VStack(alignment: .center, spacing: 35) {
-                createTopSection(header: date,
-                                 title: time,
-                                 subheading: location)
-                
-                createMiddleSection(imageName: condition.rawValue, title: "\(temperature)°C")
-                
-                createBottomSection(heading: conditionDescription,
+                createTopSection(header: data.date,
+                                 title: data.time,
+                                 subheading: data.location)
+
+                createMiddleSection(imageName: data.conditionIcon.rawValue, title: "\(data.temperature)°C")
+
+                createBottomSection(heading: data.condition,
                                     title1: NSLocalizedString("Sunrise_Text", comment: ""),
-                                    subtitle1: sunrise,
+                                    subtitle1: data.sunriseTime,
                                     title2: NSLocalizedString("Sunset_Text", comment: ""),
-                                    subtitle2: sunset)
+                                    subtitle2: data.sunsetTime)
             }
         }
     }

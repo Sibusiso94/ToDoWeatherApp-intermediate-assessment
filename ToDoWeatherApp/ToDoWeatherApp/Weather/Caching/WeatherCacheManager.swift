@@ -1,7 +1,7 @@
 import Foundation
 
-class WeatherDataProvider: DataProvider {
-    typealias T = WeatherDomainModel
+class WeatherCacheManager: DataProvider {
+    typealias T = WeatherCachingModel
 #warning("Pass in repo and refactor")
     let repository: RealmRepository
 //    let locationManager = UserLocationManager()
@@ -30,31 +30,43 @@ class WeatherDataProvider: DataProvider {
                              feelsLike: Double,
                              sunriseTime: String,
                              sunsetTime: String,
-                             completion: @escaping (WeatherDomainModel?, Error?) -> Void) {
+                             completion: @escaping (WeatherCachingModel?, Error?) -> Void) {
         let newId = UUID().uuidString
-        let newWeatherData = WeatherDomainModel(id: newId,
+        let newWeatherData = WeatherCachingModel(id: newId,
                                                 locationName: name,
                                                 condition: condition,
                                                 temperature: temperature,
                                                 feelsLikeTemperature: feelsLike,
                                                 sunriseTime: sunriseTime,
                                                 sunsetTime: sunsetTime)
-        refreshCache(idToDelete) {
-            do {
-                try self.create(newWeatherData)
-                completion(newWeatherData, nil)
-            } catch {
-                print("Faiiled to delete \(error)")
-                completion(nil, error)
+        DispatchQueue.main.async {
+            if let idToDelete {
+                self.refreshCache(idToDelete) {
+                    do {
+                        try self.create(newWeatherData)
+                        completion(newWeatherData, nil)
+                    } catch {
+                        print("Faiiled to delete \(error)")
+                        completion(nil, error)
+                    }
+                }
+            } else {
+                do {
+                    try self.create(newWeatherData)
+                    completion(newWeatherData, nil)
+                } catch {
+                    print("Faiiled to delete \(error)")
+                    completion(nil, error)
+                }
             }
         }
     }
-    
+
 //    func getLocation() {
 //        locationManager.requestLocation()
 //    }
     
-    internal func create(_ object: WeatherDomainModel) throws {
+    internal func create(_ object: WeatherCachingModel) throws {
         do {
             try repository.create(object)
         } catch {
@@ -62,7 +74,7 @@ class WeatherDataProvider: DataProvider {
         }
     }
     
-    func readAll() -> [WeatherDomainModel] {
+    func readAll() -> [WeatherCachingModel] {
         repository.readAll(T.self)
     }
     
@@ -84,6 +96,5 @@ class WeatherDataProvider: DataProvider {
                 completion()
             }
         }
-        completion()
     }
 }

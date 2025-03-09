@@ -6,8 +6,8 @@ protocol NetworkManager {
     var hasError: Bool { get set }
     var error: ApiError? { get set }
     
-    func createURL(baseURL: String, parameters: [(String, String)]) -> URL?
-    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T?, ApiError>) -> Void)
+    func createURL(baseURL: String, parameters: [(String, String)]) -> String?
+//    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T?, ApiError>) -> Void)
 }
 
 enum ApiError: LocalizedError {
@@ -38,44 +38,53 @@ final class NetworkManagerConcreation: NetworkManager {
     var hasError = false
     var error: ApiError?
     
-    func createURL(baseURL: String, parameters: [(String, String)]) -> URL? {
+    func createURL(baseURL: String, parameters: [(String, String)]) -> String? {
         var components = URLComponents(string: baseURL)
         components?.queryItems = parameters.map { URLQueryItem(name: $0.0, value: $0.1) }
-        return components?.url
+
+        return components?.url?.absoluteString
     }
-    
-    func fetchData<T: Decodable>(from url: URL, completion: @escaping (Result<T?, ApiError>) -> Void) {
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self?.handleError(ApiError.custom(error: error), completion: completion)
-                    return
-                }
-                
-                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
-                    self?.handleError(ApiError.invalidResponse(response: String(describing: response)), completion: completion)
-                    return
-                }
-                
-                guard let data = data else {
-                    self?.handleError(ApiError.noDataReceived, completion: completion)
-                    return
-                }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    let resultData = try decoder.decode(T.self, from: data)
-                    completion(.success(resultData))
-                } catch {
-                    self?.handleError(ApiError.custom(error: error), completion: completion)
-                }
-            }
-        }.resume()
+
+    func fetchData(from url: String) async throws -> WeatherModel {
+        let url = URL(string: url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+        let request = URLRequest(url: url!)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        let fetchedData = try JSONDecoder().decode(WeatherModel.self, from: try mapResponse(response: (data,response)))
+
+        return fetchedData
     }
-    
+
     private func handleError<T>(_ error: ApiError, completion: (Result<T, ApiError>) -> Void) {
         self.hasError = true
         self.error = error
         completion(.failure(error))
+    }
+
+    func mapResponse(response: (data: Data, response: URLResponse)) throws -> Data {
+        guard let httpResponse = response.response as? HTTPURLResponse else {
+            return response.data
+        }
+
+        switch httpResponse.statusCode {
+        case 200..<300:
+            return response.data
+        case 400:
+            throw NetworkError.badRequest
+        case 401:
+            throw NetworkError.unauthorized
+        case 402:
+            throw NetworkError.paymentRequired
+        case 403:
+            throw NetworkError.forbidden
+        case 404:
+            throw NetworkError.notFound
+        case 413:
+            throw NetworkError.requestEntityTooLarge
+        case 422:
+            throw NetworkError.unprocessableEntity
+        default:
+            throw NetworkError.http(httpResponse: httpResponse, data: response.data)
+        }
     }
 }

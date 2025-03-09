@@ -11,6 +11,7 @@ protocol ApiDataProvider {
 class ApiDataManager: ApiDataProvider {
     private let networkingManager = NetworkManagerConcreation()
     internal let baseURL = "https://api.weatherapi.com/v1/forecast.json"
+    var data: WeatherModel?
     var error: ApiError?
     
     func fetchApiData(location: String,
@@ -27,14 +28,13 @@ class ApiDataManager: ApiDataProvider {
         )
         
         if let url = url {
-            networkingManager.fetchData(from: url) { [weak self] (result: Result<WeatherModel?, ApiError>) in
-                switch result {
-                case .success(let data):
+            Task {
+                do {
+                    data = try await networkingManager.fetchData(from: url)
                     completion(data, nil)
-                    os_log("API called successfully")
-                case .failure(let error):
-                    os_log("%@", type: .debug, self?.networkingManager.error.debugDescription ?? "")
-                    self?.error = error
+                } catch {
+                    os_log("%@", type: .debug, error as CVarArg)
+//                    self.error = error as! ApiError
                     completion(nil, error)
                 }
             }
